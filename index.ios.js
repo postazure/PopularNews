@@ -9,51 +9,65 @@ import {
   AppRegistry,
   StyleSheet,
   Button,
-  View
+  Text,
+  View,
+  ScrollView
 } from 'react-native';
 
 import RedditClient from './components/reddit-client';
+import NewsList from './components/news-list';
+import NewsParser from './lib/news-parser';
 
 export default class PopularNews extends Component {
   constructor() {
-    super()
+    super();
     this.redditClient = new RedditClient();
-    this.handleClick = this.handleClick.bind(this);
+    this.newsParser = new NewsParser();
+
+    this.state = {
+      newsPosts: []
+    };
   }
 
-  handleClick(){
-    this.redditClient.getNews(console.log)
+  componentDidMount() {
+    this.redditClient.getNews((data) => {
+      this.setState({newsPosts: this.newsParser.parse(data)})
+    })
   }
 
   render() {
     return (
-      <View style={styles.container}>
-        <Button
-          onPress={this.handleClick}
-          title="Fetch News"
-          color="#841584"
-        />
+      <View style={$.container}>
+        <View style={$.headerBar}>
+          <Text style={$.headerTitle}>Popular News</Text>
+        </View>
+
+        <ScrollView style={$.list}>
+          <NewsList newsPosts={this.state.newsPosts}/>
+        </ScrollView>
       </View>
     );
   }
 }
 
-const styles = StyleSheet.create({
+const $ = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
+    marginTop: 20,
   },
-  welcome: {
+  headerBar: {
+    flex: 0.05,
+    textAlign: 'center',
+  },
+  headerTitle: {
     fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
   },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
+  list: {
+    flex: 1
   },
 });
 
