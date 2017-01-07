@@ -38,6 +38,7 @@ const $ = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'flex-start',
+    backgroundColor: '#808080',
     marginTop: 20,
   },
   headerBar: {

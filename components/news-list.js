@@ -78,9 +78,7 @@ export default class NewsList extends Component {
 
 
 const $ = StyleSheet.create({
-  list: {
-    backgroundColor: '#808080',
-  },
+  list: {},
   item:{
     margin: 3,
   }
