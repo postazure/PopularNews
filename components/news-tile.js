@@ -13,11 +13,16 @@ export default class NewsTile extends Component {
   constructor(props) {
     super(props);
     this.handleClick = this.handleClick.bind(this);
+
+    this.state = {
+      isViewed: false
+    }
   }
 
   handleClick() {
     Linking.canOpenURL(this.props.link).then(supported => {
       if (supported) {
+        this.setState({isViewed: true})
         Linking.openURL(this.props.link);
       } else {
         console.log('Don\'t know how to open URI: ' + this.props.link);
@@ -26,9 +31,11 @@ export default class NewsTile extends Component {
   }
 
   render() {
+    let color = this.state.isViewed ? $.viewedTile : $.unViewedTile
+
     return (
       <TouchableOpacity
-        style={$.tile}
+        style={[color, $.tile]}
         onPress={this.handleClick}
       >
         <Text style={$.title}>{this.props.title}</Text>
@@ -43,6 +50,11 @@ const $ = StyleSheet.create({
     paddingVertical: 10,
     flex: 1,
     flexDirection: 'column',
+  },
+  viewedTile: {
+    backgroundColor: '#A9A9A9'
+  },
+  unViewedTile: {
     backgroundColor: '#DCDCDC'
   },
   title: {

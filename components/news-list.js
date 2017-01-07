@@ -54,6 +54,7 @@ export default class NewsList extends Component {
           source={post.data.domain}
           link={post.data.url}
           created={post.data.created}
+          id={post.data.id}
         />
         </View>
       )
