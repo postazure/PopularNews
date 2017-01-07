@@ -10,29 +10,14 @@ import {
   StyleSheet,
   Button,
   Text,
-  View,
-  ScrollView
+  View
 } from 'react-native';
 
-import RedditClient from './components/reddit-client';
 import NewsList from './components/news-list';
-import NewsParser from './lib/news-parser';
 
 export default class PopularNews extends Component {
   constructor() {
     super();
-    this.redditClient = new RedditClient();
-    this.newsParser = new NewsParser();
-
-    this.state = {
-      newsPosts: []
-    };
-  }
-
-  componentDidMount() {
-    this.redditClient.getNews((data) => {
-      this.setState({newsPosts: this.newsParser.parse(data)})
-    })
   }
 
   render() {
@@ -42,9 +27,7 @@ export default class PopularNews extends Component {
           <Text style={$.headerTitle}>Popular News</Text>
         </View>
 
-        <ScrollView style={$.list}>
-          <NewsList newsPosts={this.state.newsPosts}/>
-        </ScrollView>
+        <NewsList style={$.list}/>
       </View>
     );
   }
