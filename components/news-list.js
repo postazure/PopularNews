@@ -48,18 +48,20 @@ export default class NewsList extends Component {
   render() {
     const newsTiles = this.state.newsPosts.map((post) => {
       return (
+        <View style={$.item} key={post.data.id}>
         <NewsTile
           title={post.data.title}
           source={post.data.domain}
           link={post.data.url}
           created={post.data.created}
-          key={post.data.id}
         />
+        </View>
       )
     });
 
     return (
       <ScrollView
+        contentContainerStyle={$.list}
         refreshControl={
           <RefreshControl
           refreshing={this.state.refreshing}
@@ -73,3 +75,13 @@ export default class NewsList extends Component {
     );
   }
 }
+
+
+const $ = StyleSheet.create({
+  list: {
+    backgroundColor: '#808080',
+  },
+  item:{
+    margin: 3,
+  }
+});

@@ -53,7 +53,7 @@ const $ = StyleSheet.create({
     color: '#FBFBFB'
   },
   list: {
-    flex: 1
+    flex: 1,
   },
 });
 

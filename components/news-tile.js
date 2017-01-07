@@ -33,7 +33,6 @@ export default class NewsTile extends Component {
       >
         <Text style={$.title}>{this.props.title}</Text>
         <Text style={$.source}>{moment.unix(this.props.created).fromNow()} | {this.props.source}</Text>
-        <View style={$.hr}/>
       </TouchableOpacity>
     );
   }
@@ -44,6 +43,7 @@ const $ = StyleSheet.create({
     paddingVertical: 10,
     flex: 1,
     flexDirection: 'column',
+    backgroundColor: '#DCDCDC'
   },
   title: {
     fontSize: 17,
@@ -54,12 +54,5 @@ const $ = StyleSheet.create({
     fontSize: 12,
     textAlign: 'center',
     color: '#333333',
-  },
-  hr: {
-    alignSelf: 'center',
-    marginBottom: 5,
-    padding: 2,
-    borderBottomWidth: 1,
-    width: 170,
   },
 });
