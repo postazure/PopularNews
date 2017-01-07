@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {
   StyleSheet,
   Text,
+  View,
   Linking,
   TouchableOpacity
 } from 'react-native';
@@ -32,6 +33,7 @@ export default class NewsTile extends Component {
       >
         <Text style={$.title}>{this.props.title}</Text>
         <Text style={$.source}>{moment.unix(this.props.created).fromNow()} | {this.props.source}</Text>
+        <View style={$.hr}/>
       </TouchableOpacity>
     );
   }
@@ -39,19 +41,25 @@ export default class NewsTile extends Component {
 
 const $ = StyleSheet.create({
   tile: {
-    borderBottomWidth: 1,
-    marginTop: 5,
-    paddingBottom: 10,
+    paddingVertical: 10,
+    flex: 1,
+    flexDirection: 'column',
   },
   title: {
-    fontSize: 14,
-    margin: 2,
-    textAlign: 'center',
-    color: '#171414'
+    fontSize: 17,
+    margin: 10,
+    color: '#171414',
   },
   source: {
-    fontSize: 10,
+    fontSize: 12,
     textAlign: 'center',
     color: '#333333',
+  },
+  hr: {
+    alignSelf: 'center',
+    marginBottom: 5,
+    padding: 2,
+    borderBottomWidth: 1,
+    width: 170,
   },
 });

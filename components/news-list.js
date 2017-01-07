@@ -28,7 +28,10 @@ export default class NewsList extends Component {
   }
 
   fetchNews(cb) {
-    if(cb === undefined) { cb = () => {} }
+    if (cb === undefined) {
+      cb = () => {
+      }
+    }
 
     this.redditClient.getNews((data) => {
       this.setState({newsPosts: this.newsParser.parse(data)}, cb())
@@ -60,7 +63,8 @@ export default class NewsList extends Component {
         refreshControl={
           <RefreshControl
           refreshing={this.state.refreshing}
-          tintColor={'#70F8BA'}
+          tintColor={'#3762D5'}
+          title={'fetching stories'}
           onRefresh={this.onRefresh.bind(this)}/>
         }
       >

@@ -39,19 +39,18 @@ const $ = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'flex-start',
     marginTop: 20,
-    backgroundColor: '#908B8A'
   },
   headerBar: {
     flex: 0.07,
     flexDirection: 'column',
     justifyContent: 'center',
-    backgroundColor: '#524948'
+    backgroundColor: '#3762D5'
   },
   headerTitle: {
     fontSize: 25,
     fontWeight: 'bold',
     textAlign: 'center',
-    color: '#7CB4B8'
+    color: '#FBFBFB'
   },
   list: {
     flex: 1
