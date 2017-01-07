@@ -14,6 +14,7 @@ export default class NewsList extends Component {
           title={post.data.title}
           source={post.data.domain}
           link={post.data.url}
+          created={post.data.created}
           key={post.data.id}
         />
       )

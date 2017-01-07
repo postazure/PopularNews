@@ -55,16 +55,20 @@ const $ = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'flex-start',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
     marginTop: 20,
+    backgroundColor: '#908B8A'
   },
   headerBar: {
-    flex: 0.05,
+    flex: 0.07,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    backgroundColor: '#524948'
   },
   headerTitle: {
-    fontSize: 20,
+    fontSize: 25,
+    fontWeight: 'bold',
     textAlign: 'center',
+    color: '#7CB4B8'
   },
   list: {
     flex: 1
