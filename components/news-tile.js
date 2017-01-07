@@ -52,10 +52,10 @@ const $ = StyleSheet.create({
     flexDirection: 'column',
   },
   viewedTile: {
-    backgroundColor: '#A9A9A9'
+    backgroundColor: '#D3D3D3'
   },
   unViewedTile: {
-    backgroundColor: '#DCDCDC'
+    backgroundColor: 'white'
   },
   title: {
     fontSize: 17,
