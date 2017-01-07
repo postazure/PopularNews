@@ -2,16 +2,35 @@ import React, { Component } from 'react';
 import {
   StyleSheet,
   Text,
-  View
+  Linking,
+  TouchableOpacity
 } from 'react-native';
 
 export default class NewsTile extends Component {
+  constructor(props){
+    super(props);
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick(){
+    Linking.canOpenURL(this.props.link).then(supported => {
+      if (supported) {
+        Linking.openURL(this.props.link);
+      } else {
+        console.log('Don\'t know how to open URI: ' + this.props.link);
+      }
+    });
+  }
+
   render() {
     return (
-      <View style={$.tile}>
+      <TouchableOpacity
+        style={$.tile}
+        onPress={this.handleClick}
+      >
         <Text style={$.title}>{this.props.title}</Text>
         <Text style={$.source}>{this.props.source}</Text>
-      </View>
+      </TouchableOpacity>
     );
   }
 }

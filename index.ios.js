@@ -61,10 +61,10 @@ const $ = StyleSheet.create({
   },
   headerBar: {
     flex: 0.05,
-    textAlign: 'center',
   },
   headerTitle: {
     fontSize: 20,
+    textAlign: 'center',
   },
   list: {
     flex: 1
