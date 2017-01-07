@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import {
   StyleSheet,
   View,
-  ScrollView
+  ScrollView,
+  RefreshControl
 } from 'react-native';
 
 import NewsTile from './news-tile';
@@ -10,7 +11,7 @@ import NewsParser from '../lib/news-parser';
 import RedditClient from './reddit-client';
 
 export default class NewsList extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
 
     this.redditClient = new RedditClient();
@@ -26,15 +27,17 @@ export default class NewsList extends Component {
     this.fetchNews();
   }
 
-  fetchNews(){
+  fetchNews(cb) {
+    if(cb === undefined) { cb = () => {} }
+
     this.redditClient.getNews((data) => {
-      this.setState({newsPosts: this.newsParser.parse(data)})
+      this.setState({newsPosts: this.newsParser.parse(data)}, cb())
     })
   }
 
   onRefresh() {
     this.setState({refreshing: true});
-    fetchData().then(() => {
+    this.fetchNews(() => {
       this.setState({refreshing: false});
     });
   }
@@ -54,8 +57,13 @@ export default class NewsList extends Component {
 
     return (
       <ScrollView
-        refreshing={this.state.refreshing}
-        onRefresh={this.onRefresh.bind(this)}>
+        refreshControl={
+          <RefreshControl
+          refreshing={this.state.refreshing}
+          tintColor={'#70F8BA'}
+          onRefresh={this.onRefresh.bind(this)}/>
+        }
+      >
         {newsTiles}
       </ScrollView>
     );
