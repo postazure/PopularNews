@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 
 import moment from 'moment';
+import themeManager from '../lib/theme-manager'
 
 export default class NewsTile extends Component {
   constructor(props) {
@@ -31,22 +32,37 @@ export default class NewsTile extends Component {
   }
 
   render() {
-    let color = this.state.isViewed ? $.viewedTile : $.unViewedTile
+    let c = themeManager.getColorsFor('newsTile');
+    let tileGbColor = this.state.isViewed ? c.viewedTile : c.unviewedTile;
 
     return (
       <TouchableOpacity
-        style={[color, $.tile]}
+        style={[tileGbColor, $.tile]}
         onPress={this.handleClick}
       >
-        <Text style={$.title}>{this.props.title}</Text>
+        <Text style={[c.title, $.title]}>{this.props.title}</Text>
         <View style={$.infoList}>
-          <Text style={$.source}>{this.props.source}</Text>
-          <Text style={$.source}>{moment.unix(this.props.created).fromNow()}</Text>
+          <Text style={[c.source, $.source]}>{this.props.source}</Text>
+          <Text style={[c.source, $.source]}>{moment.unix(this.props.created).fromNow()}</Text>
         </View>
       </TouchableOpacity>
     );
   }
 }
+
+themeManager.setColorsFor('newsTile', themeManager.BRIGHT_THEME, {
+  title: {color: '#171414'},
+  source: {color: '#333333'},
+  viewedTile: {backgroundColor: '#D3D3D3'},
+  unviewedTile: {backgroundColor: 'white'},
+});
+
+themeManager.setColorsFor('newsTile', themeManager.DARK_THEME, {
+  title: {color: '#D3D3D3'},
+  source: {color: '#6E1C00'},
+  viewedTile: {backgroundColor: '#3A3A3A'},
+  unviewedTile: {backgroundColor: '#606060'},
+});
 
 const $ = StyleSheet.create({
   tile: {
@@ -54,22 +70,15 @@ const $ = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
   },
-  viewedTile: {
-    backgroundColor: '#D3D3D3'
-  },
-  unViewedTile: {
-    backgroundColor: 'white'
-  },
   title: {
     fontSize: 17,
     margin: 10,
-    color: '#171414',
+    fontWeight: 'bold'
   },
   source: {
     flex: 1,
     fontSize: 12,
     textAlign: 'center',
-    color: '#333333',
   },
   infoList: {
     flexDirection: 'row',
