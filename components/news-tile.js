@@ -8,7 +8,6 @@ import {
 } from 'react-native';
 
 import moment from 'moment';
-import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default class NewsTile extends Component {
   constructor(props) {
@@ -43,7 +42,6 @@ export default class NewsTile extends Component {
         <View style={$.infoList}>
           <Text style={$.source}>{this.props.source}</Text>
           <Text style={$.source}>{moment.unix(this.props.created).fromNow()}</Text>
-          <Icon name="chevron-down"/>
         </View>
       </TouchableOpacity>
     );
