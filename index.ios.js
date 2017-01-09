@@ -24,10 +24,12 @@ export default class PopularNews extends Component {
   constructor() {
     super();
     this.state = {
-      theme: themeManager.BRIGHT_THEME
+      theme: themeManager.BRIGHT_THEME,
+      viewReadStories: false
     }
 
     this.toggleTheme = this.toggleTheme.bind(this);
+    this.toggleViewReadStories = this.toggleViewReadStories.bind(this);
   }
 
   toggleTheme(){
@@ -35,14 +37,25 @@ export default class PopularNews extends Component {
     this.setState({theme: theme})
   }
 
+  toggleViewReadStories(){
+    this.setState({viewReadStories: !this.state.viewReadStories})
+  }
+
   render() {
     let c = themeManager.getColorsFor('index');
     let themeIconName = this.state.theme === themeManager.BRIGHT_THEME ? "sun-o" : "moon-o";
+    let viewReadStoriesIcon = this.state.viewReadStories ? "check" : "star-o";
 
+    let headerBarColor = this.state.viewReadStories ? c.headerBarRead : c.headerBar;
     return (
       <View style={[c.container, $.container]}>
-        <View style={[c.headerBar, $.headerBar]}>
+        <View style={[headerBarColor, $.headerBar]}>
           <View style={$.headerButton}>
+            <Icon
+              style={[c.headerButtonIcon, $.headerButtonIcon]}
+              name={viewReadStoriesIcon}
+              onPress={this.toggleViewReadStories}
+              size={20}/>
           </View>
           <View style={$.headerTitle}>
             <Text style={[c.headerTitleText, $.headerTitleText]}>Popular News</Text>
@@ -56,7 +69,7 @@ export default class PopularNews extends Component {
           </View>
         </View>
 
-        <NewsList style={$.list}/>
+        <NewsList style={$.list} viewReadStories={this.state.viewReadStories}/>
       </View>
     );
   }
@@ -65,13 +78,15 @@ export default class PopularNews extends Component {
 themeManager.setColorsFor('index', themeManager.BRIGHT_THEME, {
   container: {backgroundColor: '#808080'},
   headerBar: {backgroundColor: '#3762D5'},
+  headerBarRead: {backgroundColor: '#9ba9d3'},
   headerTitleText: {color: '#FBFBFB'},
   headerButtonIcon: {color: '#FBFBFB'}
 });
 
 themeManager.setColorsFor('index', themeManager.DARK_THEME, {
   container: {backgroundColor: '#000000'},
-  headerBar: {backgroundColor: '#020202'},
+  headerBar: {backgroundColor: '#333333'},
+  headerBarRead: {backgroundColor: '#000000'},
   headerTitleText: {color: '#FBFBFB'},
   headerButtonIcon: {color: '#FBFBFB'}
 });
@@ -98,7 +113,7 @@ const $ = StyleSheet.create({
     textAlign: 'center',
   },
   headerButton: {
-    flex: 0.15,
+    flex: 0.25,
     flexDirection: 'column',
     justifyContent: 'center',
   },

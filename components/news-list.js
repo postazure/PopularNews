@@ -22,10 +22,12 @@ export default class NewsList extends Component {
       refreshing: false,
       newsPosts: [],
       viewCount: 0,
-      lastPostId: null
+      lastPostId: null,
+      readPosts: []
     };
 
     this.onScroll = debounce(10000, this.onScroll);
+    this.addArticleToReadList = this.addArticleToReadList.bind(this);
   }
 
   componentDidMount() {
@@ -52,7 +54,7 @@ export default class NewsList extends Component {
       this.setState({
           newsPosts: combindPosts,
           lastPostId: res.data.after
-      },
+        },
         cb())
     })
   }
@@ -68,27 +70,44 @@ export default class NewsList extends Component {
     });
   }
 
-  onScroll(){
-    this.fetchNews(()=>{
-      console.log("this.state news", this.state.newsPosts);
+  onScroll() {
+    this.fetchNews(()=> {
       this.setState({viewCount: this.state.viewCount + 25})
     })
   }
 
+  addArticleToReadList(post, cb) {
+    let newReadPosts = Object.assign([], this.state.readPosts);
+    newReadPosts.push(post)
+
+    this.setState({readPosts: newReadPosts}, cb());
+  }
+
   render() {
-    const newsTiles = this.state.newsPosts.map((post) => {
-      return (
-        <View style={$.item} key={post.data.id}>
-          <NewsTile
-            title={post.data.title}
-            source={post.data.domain}
-            link={post.data.url}
-            created={post.data.created}
-            id={post.data.id}
-          />
-        </View>
-      )
-    });
+    const newsTiles = this.state.newsPosts
+      .filter((post) => {
+        if (this.props.viewReadStories) {
+          return this.state.readPosts.indexOf(post) > -1
+        } else {
+          return this.state.readPosts.indexOf(post) === -1
+        }
+
+      })
+      .map((post) => {
+        return (
+          <View style={$.item} key={post.data.id}>
+            <NewsTile
+              title={post.data.title}
+              source={post.data.domain}
+              link={post.data.url}
+              created={post.data.created}
+              id={post.data.id}
+              article={post}
+              onRead={this.addArticleToReadList}
+            />
+          </View>
+        )
+      });
 
     return (
       <ScrollView

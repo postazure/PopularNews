@@ -21,12 +21,21 @@ export default class NewsTile extends Component {
   }
 
   handleClick() {
-    Linking.canOpenURL(this.props.link).then(supported => {
+    let data = this.props.article.data;
+    let addArticleToReadList = this.props.onRead;
+    let alreadyRead = this.state.isViewed;
+
+    Linking.canOpenURL(data.url).then(supported => {
       if (supported) {
-        this.setState({isViewed: true})
-        Linking.openURL(this.props.link);
+        if (!alreadyRead) {
+          this.setState({isViewed: true});
+          addArticleToReadList(this.props.article, () => {
+            Linking.openURL(data.url);
+          });
+        }
+
       } else {
-        console.log('Don\'t know how to open URI: ' + this.props.link);
+        console.log('Don\'t know how to open URI: ' + data.url);
       }
     });
   }
@@ -34,16 +43,16 @@ export default class NewsTile extends Component {
   render() {
     let c = themeManager.getColorsFor('newsTile');
     let tileGbColor = this.state.isViewed ? c.viewedTile : c.unviewedTile;
-
+    let data = this.props.article.data;
     return (
       <TouchableOpacity
         style={[tileGbColor, $.tile]}
         onPress={this.handleClick}
       >
-        <Text style={[c.title, $.title]}>{this.props.title}</Text>
+        <Text style={[c.title, $.title]}>{data.title}</Text>
         <View style={$.infoList}>
-          <Text style={[c.source, $.source]}>{this.props.source}</Text>
-          <Text style={[c.source, $.source]}>{moment.unix(this.props.created).fromNow()}</Text>
+          <Text style={[c.source, $.source]}>{data.source}</Text>
+          <Text style={[c.source, $.source]}>{moment.unix(data.created).fromNow()}</Text>
         </View>
       </TouchableOpacity>
     );
