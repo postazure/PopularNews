@@ -71,7 +71,7 @@ themeManager.setColorsFor('index', themeManager.BRIGHT_THEME, {
 
 themeManager.setColorsFor('index', themeManager.DARK_THEME, {
   container: {backgroundColor: '#000000'},
-  headerBar: {backgroundColor: '#333333'},
+  headerBar: {backgroundColor: '#020202'},
   headerTitleText: {color: '#FBFBFB'},
   headerButtonIcon: {color: '#FBFBFB'}
 });

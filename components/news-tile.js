@@ -59,9 +59,9 @@ themeManager.setColorsFor('newsTile', themeManager.BRIGHT_THEME, {
 
 themeManager.setColorsFor('newsTile', themeManager.DARK_THEME, {
   title: {color: '#D3D3D3'},
-  source: {color: '#6E1C00'},
-  viewedTile: {backgroundColor: '#3A3A3A'},
-  unviewedTile: {backgroundColor: '#606060'},
+  source: {color: '#D3D3D3'},
+  viewedTile: {backgroundColor: '#020202'},
+  unviewedTile: {backgroundColor: '#131313'},
 });
 
 const $ = StyleSheet.create({
