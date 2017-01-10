@@ -35,7 +35,9 @@ export default class NewsList extends Component {
   componentDidMount() {
     AsyncStorage.getItem(READ_LIST, (err, readListFromStorage) => {
       if (readListFromStorage) {
-        this.setState({readPosts: JSON.parse(readListFromStorage)});
+        let readPostsFromStorage = JSON.parse(readListFromStorage);
+        console.log('Got ' + readPostsFromStorage.length + 'number of items from storage');
+        this.setState({readPosts: readPostsFromStorage});
       }
     });
 
@@ -90,34 +92,40 @@ export default class NewsList extends Component {
 
     this.setState({readPosts: newReadPosts}, () => {
       AsyncStorage.setItem(READ_LIST, JSON.stringify(newReadPosts), (err) => {
+        console.log('Set ' + newReadPosts.length + 'number of items in storage');
         cb()
       });
     });
   }
 
-  render() {
-    const newsTiles = this.state.newsPosts
-      .filter((post) => {
-        if (this.props.viewReadStories) {
-          //Include only already read stories
-          return this.state.readPosts.find(p => p.data.url === post.data.url) !== undefined
-        } else {
-          //Include only unread stories
-          return this.state.readPosts.find(p => p.data.url === post.data.url) === undefined
-        }
-
-      })
-      .map((post) => {
-        return (
-          <View style={$.item} key={post.data.id}>
-            <NewsTile
-              article={post}
-              markedAsRead={this.props.viewReadStories}
-              onRead={this.addArticleToReadList}
-            />
-          </View>
+  filterStories() {
+    if (this.props.viewReadStories) {
+      //Include only already read stories
+      return this.state.readPosts;
+    } else {
+      //Include only unread stories
+      return this.state.newsPosts
+        .filter((post) => {
+            return this.state.readPosts.find(p => p.data.url === post.data.url) === undefined
+          }
         )
-      });
+    }
+  }
+
+  renderNewsTile(post) {
+    return (
+      <View style={$.item} key={post.data.id}>
+        <NewsTile
+          article={post}
+          markedAsRead={this.props.viewReadStories}
+          onRead={this.addArticleToReadList}
+        />
+      </View>
+    )
+  }
+
+  render() {
+    const newsTiles = this.filterStories().map((post) => this.renderNewsTile(post));
 
     let moreStoriesButton = this.props.viewReadStories ? null : (
       <View style={$.item}>
