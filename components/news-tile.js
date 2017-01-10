@@ -42,11 +42,10 @@ export default class NewsTile extends Component {
 
   render() {
     let c = themeManager.getColorsFor('newsTile');
-    let tileGbColor = this.state.isViewed ? c.viewedTile : c.unviewedTile;
     let data = this.props.article.data;
     return (
       <TouchableOpacity
-        style={[tileGbColor, $.tile]}
+        style={[c.tile, $.tile]}
         onPress={this.handleClick}
       >
         <Text style={[c.title, $.title]}>{data.title}</Text>
@@ -62,15 +61,13 @@ export default class NewsTile extends Component {
 themeManager.setColorsFor('newsTile', themeManager.BRIGHT_THEME, {
   title: {color: '#171414'},
   source: {color: '#333333'},
-  viewedTile: {backgroundColor: '#D3D3D3'},
-  unviewedTile: {backgroundColor: 'white'},
+  tile: {backgroundColor: 'white'},
 });
 
 themeManager.setColorsFor('newsTile', themeManager.DARK_THEME, {
   title: {color: '#D3D3D3'},
   source: {color: '#D3D3D3'},
-  viewedTile: {backgroundColor: '#020202'},
-  unviewedTile: {backgroundColor: '#131313'},
+  tile: {backgroundColor: '#131313'},
 });
 
 const $ = StyleSheet.create({

@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
 import {
   StyleSheet,
+  AsyncStorage,
   View,
   ScrollView,
   RefreshControl
 } from 'react-native';
-
 
 import NewsTile from './news-tile';
 import NewsParser from '../lib/news-parser';
 import RedditClient from './reddit-client';
 import ButtonTile from './button-tile'
 
+const READ_LIST = 'READ_LIST';
 export default class NewsList extends Component {
   constructor(props) {
     super(props);
@@ -32,6 +33,12 @@ export default class NewsList extends Component {
   }
 
   componentDidMount() {
+    AsyncStorage.getItem(READ_LIST, (err, readListFromStorage) => {
+      if (readListFromStorage) {
+        this.setState({readPosts: JSON.parse(readListFromStorage)});
+      }
+    });
+
     this.fetchNews();
   }
 
@@ -79,18 +86,24 @@ export default class NewsList extends Component {
 
   addArticleToReadList(post, cb) {
     let newReadPosts = Object.assign([], this.state.readPosts);
-    newReadPosts.push(post)
+    newReadPosts.push(post);
 
-    this.setState({readPosts: newReadPosts}, cb());
+    this.setState({readPosts: newReadPosts}, () => {
+      AsyncStorage.setItem(READ_LIST, JSON.stringify(newReadPosts), (err) => {
+        cb()
+      });
+    });
   }
 
   render() {
     const newsTiles = this.state.newsPosts
       .filter((post) => {
         if (this.props.viewReadStories) {
-          return this.state.readPosts.indexOf(post) > -1
+          //return this.state.readPosts.indexOf(post) > -1
+          return this.state.readPosts.find(p => p.data.url === post.data.url) !== undefined
         } else {
-          return this.state.readPosts.indexOf(post) === -1
+          //return this.state.readPosts.indexOf(post) === -1
+          return this.state.readPosts.find(p => p.data.url === post.data.url) === undefined
         }
 
       })
@@ -110,6 +123,17 @@ export default class NewsList extends Component {
         )
       });
 
+    let moreStoriesButton = this.props.viewReadStories ? null : (
+      <View style={$.item}>
+        <ButtonTile
+          onPress={this.loadMoreStories}
+          text={"More Stories"}
+          iconName={"chevron-down"}
+          iconSize={12}
+        />
+      </View>
+    );
+
     return (
       <ScrollView
         contentContainerStyle={$.list}
@@ -123,14 +147,7 @@ export default class NewsList extends Component {
         showsVerticalScrollIndicator={false}
       >
         {newsTiles}
-        <View style={$.item}>
-          <ButtonTile
-            onPress={this.loadMoreStories}
-            text={"More Stories"}
-            iconName={"chevron-down"}
-            iconSize={12}
-          />
-        </View>
+        {moreStoriesButton}
       </ScrollView>
     );
   }
