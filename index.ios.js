@@ -44,7 +44,7 @@ export default class PopularNews extends Component {
   render() {
     let c = themeManager.getColorsFor('index');
     let themeIconName = this.state.theme === themeManager.BRIGHT_THEME ? "sun-o" : "moon-o";
-    let viewReadStoriesIcon = this.state.viewReadStories ? "check" : "star-o";
+    let viewReadStoriesIcon = this.state.viewReadStories ? "check-square-o" : "star-o";
 
     let headerBarColor = this.state.viewReadStories ? c.headerBarRead : c.headerBar;
     return (

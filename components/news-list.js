@@ -99,10 +99,10 @@ export default class NewsList extends Component {
     const newsTiles = this.state.newsPosts
       .filter((post) => {
         if (this.props.viewReadStories) {
-          //return this.state.readPosts.indexOf(post) > -1
+          //Include only already read stories
           return this.state.readPosts.find(p => p.data.url === post.data.url) !== undefined
         } else {
-          //return this.state.readPosts.indexOf(post) === -1
+          //Include only unread stories
           return this.state.readPosts.find(p => p.data.url === post.data.url) === undefined
         }
 
@@ -111,12 +111,8 @@ export default class NewsList extends Component {
         return (
           <View style={$.item} key={post.data.id}>
             <NewsTile
-              title={post.data.title}
-              source={post.data.domain}
-              link={post.data.url}
-              created={post.data.created}
-              id={post.data.id}
               article={post}
+              markedAsRead={this.props.viewReadStories}
               onRead={this.addArticleToReadList}
             />
           </View>
@@ -141,7 +137,7 @@ export default class NewsList extends Component {
           <RefreshControl
           refreshing={this.state.refreshing}
           tintColor={'#3762D5'}
-          title={'fetching stories'}
+          title={'refreshing'}
           onRefresh={this.onRefresh.bind(this)}/>
         }
         showsVerticalScrollIndicator={false}
