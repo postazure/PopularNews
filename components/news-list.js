@@ -11,8 +11,11 @@ import NewsTile from './news-tile';
 import NewsParser from '../lib/news-parser';
 import RedditClient from './reddit-client';
 import ButtonTile from './button-tile'
+import PersistenceClient from '../lib/persistence-client'
 
-const READ_LIST = 'READ_LIST';
+const persistenceClient = new PersistenceClient()
+
+
 export default class NewsList extends Component {
   constructor(props) {
     super(props);
@@ -33,12 +36,8 @@ export default class NewsList extends Component {
   }
 
   componentDidMount() {
-    AsyncStorage.getItem(READ_LIST, (err, readListFromStorage) => {
-      if (readListFromStorage) {
-        let readPostsFromStorage = JSON.parse(readListFromStorage);
-        console.log('Got ' + readPostsFromStorage.length + 'number of items from storage');
-        this.setState({readPosts: readPostsFromStorage});
-      }
+    persistenceClient.retrieveReadNews((readPosts) => {
+      this.setState({readPosts: readPosts})
     });
 
     this.fetchNews();
@@ -91,10 +90,7 @@ export default class NewsList extends Component {
     newReadPosts.push(post);
 
     this.setState({readPosts: newReadPosts}, () => {
-      AsyncStorage.setItem(READ_LIST, JSON.stringify(newReadPosts), (err) => {
-        console.log('Set ' + newReadPosts.length + 'number of items in storage');
-        cb()
-      });
+      persistenceClient.persistReadNews(newReadPosts, cb)
     });
   }
 
