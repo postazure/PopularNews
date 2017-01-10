@@ -22,7 +22,6 @@ import themeManager from './lib/theme-manager'
 const POPULAR_PAGE_INDEX = 1;
 const DONE_PAGE_INDEX = 0;
 
-
 export default class PopularNews extends Component {
   constructor() {
     super();
@@ -35,12 +34,12 @@ export default class PopularNews extends Component {
     this.toggleViewReadStories = this.toggleViewReadStories.bind(this);
   }
 
-  toggleTheme(){
+  toggleTheme() {
     let theme = themeManager.toggleTheme();
     this.setState({theme: theme})
   }
 
-  toggleViewReadStories(indexOfCurrentPage){
+  toggleViewReadStories(indexOfCurrentPage) {
     this.setState({viewReadStories: indexOfCurrentPage === DONE_PAGE_INDEX})
   }
 
@@ -66,8 +65,11 @@ export default class PopularNews extends Component {
         </View>
 
         <Swiper pager={false} index={POPULAR_PAGE_INDEX} onPageChange={this.toggleViewReadStories}>
-        <NewsList style={$.list} viewReadStories={true}/>
-        <NewsList style={$.list} viewReadStories={false}/>
+          <View>
+            <Text style={$.readBanner}>You've read all this...</Text>
+            <NewsList style={$.list} viewReadStories={true}/>
+          </View>
+          <NewsList style={$.list} viewReadStories={false}/>
         </Swiper>
       </View>
     );
@@ -122,6 +124,10 @@ const $ = StyleSheet.create({
   list: {
     flex: 1,
   },
+  readBanner: {
+    textAlign: 'center',
+    color: 'white'
+  }
 });
 
 AppRegistry.registerComponent('PopularNews', () => PopularNews);

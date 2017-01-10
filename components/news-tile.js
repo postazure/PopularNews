@@ -90,16 +90,13 @@ const $ = StyleSheet.create({
   },
   source: {
     flex: 1,
-    textAlign: 'left',
+    textAlign: 'center',
     fontSize: 12,
   },
   time: {
-    flex: 0.7,
-    textAlign: 'right',
+    flex: 0.5,
+    textAlign: 'left',
     fontSize: 12,
-  },
-  doneButton: {
-    marginLeft: 30,
   },
   infoList: {
     flexDirection: 'row',
