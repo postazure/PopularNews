@@ -4,8 +4,11 @@ import {
   Text,
   View,
   Linking,
+  TouchableWithoutFeedback,
   TouchableOpacity
 } from 'react-native';
+
+import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -15,25 +18,27 @@ import themeManager from '../lib/theme-manager'
 export default class NewsTile extends Component {
   constructor(props) {
     super(props);
-    this.handleClick = this.handleClick.bind(this);
-    this.markAsRead = this.markAsRead.bind(this);
+    this.openArticle = this.openArticle.bind(this);
+    this.dismissArticle = this.dismissArticle.bind(this);
   }
 
-  handleClick() {
+  openArticle() {
     let data = this.props.article.data;
 
     Linking.canOpenURL(data.url).then(supported => {
       if (supported) {
-        this.markAsRead(() => Linking.openURL(data.url))
+        this.dismissArticle(() => Linking.openURL(data.url))
       } else {
         console.log('Don\'t know how to open URI: ' + data.url);
       }
     });
   }
 
-  markAsRead(cb) {
+  dismissArticle(cb) {
     this.props.onRead(this.props.article, () => {
-      if (typeof(cb) === "function") {cb();}
+      if (typeof(cb) === "function") {
+        cb();
+      }
     });
   }
 
@@ -41,27 +46,21 @@ export default class NewsTile extends Component {
     let c = themeManager.getColorsFor('newsTile');
     let data = this.props.article.data;
 
-    let markAsReadButton = this.props.markedAsRead ? null : (<Icon
-      style={[c.source, $.doneButton]}
-      name="check-square-o"
-      size={18}
-      onPress={this.markAsRead}
-    />)
+    let markAsReadButton = this.props.markedAsRead ? null : this.dismissArticle
 
     return (
-      <View style={[c.tile, $.tile]}>
-        <TouchableOpacity onPress={this.handleClick}>
+      <TouchableOpacity onLongPress={markAsReadButton} onPress={this.openArticle}>
+        <View style={[c.tile, $.tile]}>
           <Text style={[c.title, $.title]}>{data.title}</Text>
-        </TouchableOpacity>
-        <View style={$.infoList}>
-          <Text style={[c.source, $.source]}
-                ellipsizeMode="tail"
-                numberOfLines={1}
-          >{data.domain}</Text>
-          <Text style={[c.source, $.time]}>{moment.unix(data.created).fromNow()}</Text>
-          {markAsReadButton}
+          <View style={$.infoList}>
+            <Text style={[c.source, $.source]}
+                  ellipsizeMode="tail"
+                  numberOfLines={1}
+            >{data.domain}</Text>
+            <Text style={[c.source, $.time]}>{moment.unix(data.created).fromNow()}</Text>
+          </View>
         </View>
-      </View>
+      </TouchableOpacity>
     );
   }
 }
