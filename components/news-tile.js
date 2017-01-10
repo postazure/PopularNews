@@ -51,7 +51,7 @@ export default class NewsTile extends Component {
       >
         <Text style={[c.title, $.title]}>{data.title}</Text>
         <View style={$.infoList}>
-          <Text style={[c.source, $.source]}>{data.source}</Text>
+          <Text style={[c.source, $.source]}>{data.domain}</Text>
           <Text style={[c.source, $.source]}>{moment.unix(data.created).fromNow()}</Text>
         </View>
       </TouchableOpacity>
