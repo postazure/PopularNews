@@ -13,11 +13,14 @@ import {
   View
 } from 'react-native';
 
+import Swiper from 'react-native-page-swiper'
 import NewsList from './components/news-list';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import themeManager from './lib/theme-manager'
 
+const POPULAR_PAGE_INDEX = 1;
+const DONE_PAGE_INDEX = 0;
 
 
 export default class PopularNews extends Component {
@@ -37,26 +40,19 @@ export default class PopularNews extends Component {
     this.setState({theme: theme})
   }
 
-  toggleViewReadStories(){
-    this.setState({viewReadStories: !this.state.viewReadStories})
+  toggleViewReadStories(indexOfCurrentPage){
+    this.setState({viewReadStories: indexOfCurrentPage === DONE_PAGE_INDEX})
   }
 
   render() {
     let c = themeManager.getColorsFor('index');
     let themeIconName = this.state.theme === themeManager.BRIGHT_THEME ? "sun-o" : "moon-o";
-    let viewReadStoriesIcon = this.state.viewReadStories ? "check-square-o" : "star-o";
 
     let headerBarColor = this.state.viewReadStories ? c.headerBarRead : c.headerBar;
     return (
       <View style={[c.container, $.container]}>
         <View style={[headerBarColor, $.headerBar]}>
-          <View style={$.headerButton}>
-            <Icon
-              style={[c.headerButtonIcon, $.headerButtonIcon]}
-              name={viewReadStoriesIcon}
-              onPress={this.toggleViewReadStories}
-              size={25}/>
-          </View>
+          <View style={$.headerButton}></View>
           <View style={$.headerTitle}>
             <Text style={[c.headerTitleText, $.headerTitleText]}>Popular News</Text>
           </View>
@@ -69,7 +65,10 @@ export default class PopularNews extends Component {
           </View>
         </View>
 
-        <NewsList style={$.list} viewReadStories={this.state.viewReadStories}/>
+        <Swiper pager={false} index={POPULAR_PAGE_INDEX} onPageChange={this.toggleViewReadStories}>
+        <NewsList style={$.list} viewReadStories={true}/>
+        <NewsList style={$.list} viewReadStories={false}/>
+        </Swiper>
       </View>
     );
   }
