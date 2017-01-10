@@ -130,16 +130,18 @@ export default class NewsList extends Component {
       </View>
     );
 
+    let refreshControl = this.props.viewReadStories ? null : (
+      <RefreshControl
+        refreshing={this.state.refreshing}
+        tintColor={'#3762D5'}
+        title={'refreshing'}
+        onRefresh={this.onRefresh.bind(this)}/>
+    );
+
     return (
       <ScrollView
         contentContainerStyle={$.list}
-        refreshControl={
-          <RefreshControl
-          refreshing={this.state.refreshing}
-          tintColor={'#3762D5'}
-          title={'refreshing'}
-          onRefresh={this.onRefresh.bind(this)}/>
-        }
+        refreshControl={refreshControl}
         showsVerticalScrollIndicator={false}
       >
         {newsTiles}
