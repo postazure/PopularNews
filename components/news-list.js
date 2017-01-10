@@ -11,28 +11,24 @@ import NewsTile from './news-tile';
 import NewsParser from '../lib/news-parser';
 import RedditClient from './reddit-client';
 import ButtonTile from './button-tile'
+
+import contentManager from '../lib/content-manager'
+
 import PersistenceClient from '../lib/persistence-client'
-
 const persistenceClient = new PersistenceClient()
-
 
 export default class NewsList extends Component {
   constructor(props) {
     super(props);
-
-    this.redditClient = new RedditClient();
-    this.newsParser = new NewsParser();
-
     this.state = {
       refreshing: false,
       newsPosts: [],
-      viewCount: 0,
-      lastPostId: null,
       readPosts: []
     };
 
     this.addArticleToReadList = this.addArticleToReadList.bind(this);
-    this.loadMoreStories = this.loadMoreStories.bind(this);
+    this.fetchNews = this.fetchNews.bind(this);
+    this.onRefresh = this.onRefresh.bind(this);
   }
 
   componentDidMount() {
@@ -44,45 +40,23 @@ export default class NewsList extends Component {
   }
 
   fetchNews(cb) {
-    if (cb === undefined) {
-      cb = () => {
-      }
+    if(typeof(cb) !== 'function') {
+      cb = () => {}
     }
 
-    this.redditClient.getNews(this.state.viewCount, this.state.lastPostId, (res) => {
-      let newsPosts = Object.assign([], this.state.newsPosts);
-      let newItems = this.newsParser.parse(res);
-      let combindPosts = newsPosts
-        .concat(newItems)
-        .filter((post, pos, arr) => {
-          return arr
-              .map(post => post.data.url)
-              .indexOf(post.data.url) === pos;
-        });
-
-      this.setState({
-          newsPosts: combindPosts,
-          lastPostId: res.data.after
-        },
-        cb())
+    contentManager.fetchMoreNews(this.state.newsPosts, (combineNewsPosts) => {
+      this.setState(
+        {newsPosts: combineNewsPosts},
+        cb)
     })
+
   }
 
   onRefresh() {
     this.setState({refreshing: true});
-    this.fetchNews(() => {
-      this.setState({
-        refreshing: false,
-        viewCount: 0,
-        newsPosts: []
-      });
+    contentManager.refreshNews((combineNewsPosts) => {
+      this.setState({newsPosts: combineNewsPosts, refreshing: false});
     });
-  }
-
-  loadMoreStories() {
-    this.fetchNews(()=> {
-      this.setState({viewCount: this.state.viewCount + 25})
-    })
   }
 
   addArticleToReadList(post, cb) {
@@ -126,7 +100,7 @@ export default class NewsList extends Component {
     let moreStoriesButton = this.props.viewReadStories ? null : (
       <View style={$.item}>
         <ButtonTile
-          onPress={this.loadMoreStories}
+          onPress={this.fetchNews}
           text={"More Stories"}
           iconName={"chevron-down"}
           iconSize={12}
@@ -139,7 +113,7 @@ export default class NewsList extends Component {
         refreshing={this.state.refreshing}
         tintColor={'#3762D5'}
         title={'refreshing'}
-        onRefresh={this.onRefresh.bind(this)}/>
+        onRefresh={this.onRefresh}/>
     );
 
     return (
