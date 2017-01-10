@@ -55,7 +55,7 @@ export default class PopularNews extends Component {
               style={[c.headerButtonIcon, $.headerButtonIcon]}
               name={viewReadStoriesIcon}
               onPress={this.toggleViewReadStories}
-              size={20}/>
+              size={25}/>
           </View>
           <View style={$.headerTitle}>
             <Text style={[c.headerTitleText, $.headerTitleText]}>Popular News</Text>
@@ -65,7 +65,7 @@ export default class PopularNews extends Component {
               style={[c.headerButtonIcon, $.headerButtonIcon]}
               name={themeIconName}
               onPress={this.toggleTheme}
-              size={20}/>
+              size={25}/>
           </View>
         </View>
 
@@ -99,7 +99,7 @@ const $ = StyleSheet.create({
     marginTop: 20,
   },
   headerBar: {
-    flex: 0.07,
+    flex: 0.08,
     flexDirection: 'row',
   },
   headerTitle: {
@@ -113,7 +113,7 @@ const $ = StyleSheet.create({
     textAlign: 'center',
   },
   headerButton: {
-    flex: 0.25,
+    flex: 0.28,
     flexDirection: 'column',
     justifyContent: 'center',
   },
