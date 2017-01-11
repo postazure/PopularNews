@@ -73,9 +73,17 @@ export default class PopularNews extends Component {
   }
 
   refreshNews(cb) {
+    if (typeof(cb) !== "function") {
+      cb = () => {}
+    }
+
     contentFetcher.refreshNews((combineNewsPosts) => {
       this.setState({unreadNewsPosts: combineNewsPosts}, cb());
     });
+  }
+
+  clearAllDonePosts(){
+    newsPostManager.clearAllDone(this.setState({doneNewsPosts: []}, this.refreshNews))
   }
 
   render() {
@@ -106,6 +114,11 @@ export default class PopularNews extends Component {
                       newsPosts={this.state.doneNewsPosts}
                       readMoreButton={false}
                       fetchNews={this.fetchNews.bind(this)}
+            />
+            <Button
+            title="Clear History"
+            color="red"
+            onPress={this.clearAllDonePosts.bind(this)}
             />
           </View>
           <NewsList
