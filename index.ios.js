@@ -17,6 +17,10 @@ import Swiper from 'react-native-page-swiper'
 import NewsList from './components/news-list';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
+import NewsPostManager from './lib/news-post-manager';
+const newsPostManager = new NewsPostManager();
+import contentFetcher from './lib/content-fetcher'
+
 import themeManager from './lib/theme-manager'
 
 const POPULAR_PAGE_INDEX = 1;
@@ -27,11 +31,22 @@ export default class PopularNews extends Component {
     super();
     this.state = {
       theme: themeManager.BRIGHT_THEME,
-      viewReadStories: false
-    }
+      viewReadStories: false,
+      unreadNewsPosts: [],
+      doneNewsPosts: []
+    };
 
     this.toggleTheme = this.toggleTheme.bind(this);
     this.toggleViewReadStories = this.toggleViewReadStories.bind(this);
+    this.addPostToDoneNewsPosts = this.addPostToDoneNewsPosts.bind(this);
+  }
+
+  componentDidMount() {
+    newsPostManager.fetchDonePostListFromStorage((readPosts) => {
+      this.setState({doneNewsPosts: readPosts})
+    });
+
+    this.fetchNews();
   }
 
   toggleTheme() {
@@ -41,6 +56,26 @@ export default class PopularNews extends Component {
 
   toggleViewReadStories(indexOfCurrentPage) {
     this.setState({viewReadStories: indexOfCurrentPage === DONE_PAGE_INDEX})
+  }
+
+  addPostToDoneNewsPosts(post, cb) {
+    newsPostManager.transferPostToDoneList(
+      post, this.state.unreadNewsPosts, this.state.doneNewsPosts,
+      (newUnreadList, newDoneList) => {
+        this.setState({doneNewsPosts: newDoneList, unreadNewsPosts: newUnreadList})
+      }, cb());
+  }
+
+  fetchNews() {
+    contentFetcher.fetchMoreNews(this.state.unreadNewsPosts, (combineNewsPosts) => {
+      this.setState({unreadNewsPosts: combineNewsPosts})
+    })
+  }
+
+  refreshNews(cb) {
+    contentFetcher.refreshNews((combineNewsPosts) => {
+      this.setState({unreadNewsPosts: combineNewsPosts}, cb());
+    });
   }
 
   render() {
@@ -67,9 +102,19 @@ export default class PopularNews extends Component {
         <Swiper pager={false} index={POPULAR_PAGE_INDEX} onPageChange={this.toggleViewReadStories}>
           <View>
             <Text style={$.readBanner}>You've read all this...</Text>
-            <NewsList style={$.list} viewReadStories={true}/>
+            <NewsList style={$.list}
+                      newsPosts={this.state.doneNewsPosts}
+                      readMoreButton={false}
+                      fetchNews={this.fetchNews.bind(this)}
+            />
           </View>
-          <NewsList style={$.list} viewReadStories={false}/>
+          <NewsList
+            newsPosts={this.state.unreadNewsPosts}
+            onRefresh={this.refreshNews.bind(this)}
+            fetchNews={this.fetchNews.bind(this)}
+            style={$.list}
+            readMoreButton={true}
+            onItemDone={this.addPostToDoneNewsPosts}/>
         </Swiper>
       </View>
     );
