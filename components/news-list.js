@@ -9,7 +9,6 @@ import {
 
 import NewsTile from './news-tile';
 import NewsParser from '../lib/news-parser';
-import RedditClient from './reddit-client';
 import ButtonTile from './button-tile'
 
 export default class NewsList extends Component {
@@ -24,7 +23,7 @@ export default class NewsList extends Component {
 
   onRefresh() {
     this.setState({refreshing: true});
-    this.props.refreshNews(() => {
+    this.props.onRefresh(() => {
       this.setState({refreshing: false});
     });
   }
