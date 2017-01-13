@@ -94,7 +94,7 @@ export default class PopularNews extends Component {
     return (
       <View style={[c.container, $.container]}>
         <View style={[headerBarColor, $.headerBar]}>
-          <View style={$.headerButton}></View>
+          <View style={$.headerButton}/>
           <View style={$.headerTitle}>
             <Text style={[c.headerTitleText, $.headerTitleText]}>Popular News</Text>
           </View>
