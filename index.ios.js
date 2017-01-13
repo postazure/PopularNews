@@ -19,7 +19,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import NewsPostManager from './lib/news-post-manager';
 const newsPostManager = new NewsPostManager();
-import contentFetcher from './lib/content-fetcher'
+import ContentFetcher from './lib/content-fetcher'
+const contentFetcher = new ContentFetcher();
 
 import themeManager from './lib/theme-manager'
 
