@@ -1,97 +1,95 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import {
   AppRegistry,
   StyleSheet,
   Button,
   Text,
   View
-} from 'react-native';
+} from 'react-native'
 
 import Swiper from 'react-native-page-swiper'
-import NewsList from './components/news-list';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import NewsList from './components/news-list'
+import Icon from 'react-native-vector-icons/FontAwesome'
 
-import NewsPostManager from './lib/news-post-manager';
-const newsPostManager = new NewsPostManager();
+import NewsPostManager from './lib/news-post-manager'
+const newsPostManager = new NewsPostManager()
 import ContentFetcher from './lib/content-fetcher'
-const contentFetcher = new ContentFetcher();
+const contentFetcher = new ContentFetcher()
 
 import themeManager from './lib/theme-manager'
 
-const POPULAR_PAGE_INDEX = 1;
-const DONE_PAGE_INDEX = 0;
+const POPULAR_PAGE_INDEX = 1
+const DONE_PAGE_INDEX = 0
 
 export default class PopularNews extends Component {
-  constructor() {
-    super();
+  constructor () {
+    super()
     this.state = {
       theme: themeManager.BRIGHT_THEME,
       viewReadStories: false,
       unreadNewsPosts: [],
       doneNewsPosts: []
-    };
+    }
 
-    this.toggleTheme = this.toggleTheme.bind(this);
-    this.toggleViewReadStories = this.toggleViewReadStories.bind(this);
-    this.addPostToDoneNewsPosts = this.addPostToDoneNewsPosts.bind(this);
+    this.toggleTheme = this.toggleTheme.bind(this)
+    this.toggleViewReadStories = this.toggleViewReadStories.bind(this)
+    this.addPostToDoneNewsPosts = this.addPostToDoneNewsPosts.bind(this)
   }
 
-  componentDidMount() {
+  componentDidMount () {
     newsPostManager.fetchDonePostListFromStorage((readPosts) => {
       this.setState({doneNewsPosts: readPosts})
-    });
+    })
 
-    this.fetchNews();
+    this.fetchNews()
   }
 
-  toggleTheme() {
-    let theme = themeManager.toggleTheme();
+  toggleTheme () {
+    let theme = themeManager.toggleTheme()
     this.setState({theme: theme})
   }
 
-  toggleViewReadStories(indexOfCurrentPage) {
+  toggleViewReadStories (indexOfCurrentPage) {
     this.setState({viewReadStories: indexOfCurrentPage === DONE_PAGE_INDEX})
   }
 
-  addPostToDoneNewsPosts(post, cb) {
-    newsPostManager.transferPostToDoneList(
-      post, this.state.unreadNewsPosts, this.state.doneNewsPosts,
-      (newUnreadList, newDoneList) => {
-        this.setState({doneNewsPosts: newDoneList, unreadNewsPosts: newUnreadList})
-      }, cb());
+  addPostToDoneNewsPosts (post, cb) {
+    return new Promise(resolve => {
+      newsPostManager.transferPostToDoneList(
+        post, this.state.unreadNewsPosts, this.state.doneNewsPosts,
+        (newUnreadList, newDoneList) => {
+          this.setState({doneNewsPosts: newDoneList, unreadNewsPosts: newUnreadList})
+        }, resolve)
+    })
+      .then(cb())
   }
 
-  fetchNews() {
-    contentFetcher.fetchMoreNews(this.state.unreadNewsPosts, (combineNewsPosts) => {
-      this.setState({unreadNewsPosts: combineNewsPosts})
+  fetchNews = () => {
+    return new Promise((resolve, reject) => {
+      contentFetcher.fetchMoreNews(this.state.unreadNewsPosts, this.state.doneNewsPosts)
+        .then((combineNewsPosts) => {this.setState({unreadNewsPosts: combineNewsPosts})})
+        .then(resolve)
+    })
+
+  }
+
+  refreshNews = () => {
+    return new Promise((resolve, reject) => {
+      contentFetcher.refreshNews()
+      this.fetchNews()
+        .then(resolve)
     })
   }
 
-  refreshNews(cb) {
-    if (typeof(cb) !== "function") {
-      cb = () => {}
-    }
-
-    contentFetcher.refreshNews((combineNewsPosts) => {
-      this.setState({unreadNewsPosts: combineNewsPosts}, cb());
-    });
-  }
-
-  clearAllDonePosts(){
+  clearAllDonePosts () {
     newsPostManager.clearAllDone(this.setState({doneNewsPosts: []}, this.refreshNews))
   }
 
-  render() {
-    let c = themeManager.getColorsFor('index');
-    let themeIconName = this.state.theme === themeManager.BRIGHT_THEME ? "sun-o" : "moon-o";
+  render () {
+    let c = themeManager.getColorsFor('index')
+    let themeIconName = this.state.theme === themeManager.BRIGHT_THEME ? 'sun-o' : 'moon-o'
 
-    let headerBarColor = this.state.viewReadStories ? c.headerBarRead : c.headerBar;
+    let headerBarColor = this.state.viewReadStories ? c.headerBarRead : c.headerBar
     return (
       <View style={[c.container, $.container]}>
         <View style={[headerBarColor, $.headerBar]}>
@@ -117,21 +115,21 @@ export default class PopularNews extends Component {
                       fetchNews={this.fetchNews.bind(this)}
             />
             <Button
-            title="Clear History"
-            color="red"
-            onPress={this.clearAllDonePosts.bind(this)}
+              title="Clear History"
+              color="red"
+              onPress={this.clearAllDonePosts.bind(this)}
             />
           </View>
           <NewsList
             newsPosts={this.state.unreadNewsPosts}
-            onRefresh={this.refreshNews.bind(this)}
+            onRefresh={this.refreshNews}
             fetchNews={this.fetchNews.bind(this)}
             style={$.list}
             readMoreButton={true}
             onItemDone={this.addPostToDoneNewsPosts}/>
         </Swiper>
       </View>
-    );
+    )
   }
 }
 
@@ -141,7 +139,7 @@ themeManager.setColorsFor('index', themeManager.BRIGHT_THEME, {
   headerBarRead: {backgroundColor: '#9ba9d3'},
   headerTitleText: {color: '#FBFBFB'},
   headerButtonIcon: {color: '#FBFBFB'}
-});
+})
 
 themeManager.setColorsFor('index', themeManager.DARK_THEME, {
   container: {backgroundColor: '#000000'},
@@ -149,7 +147,7 @@ themeManager.setColorsFor('index', themeManager.DARK_THEME, {
   headerBarRead: {backgroundColor: '#000000'},
   headerTitleText: {color: '#FBFBFB'},
   headerButtonIcon: {color: '#FBFBFB'}
-});
+})
 
 const $ = StyleSheet.create({
   container: {
@@ -187,6 +185,6 @@ const $ = StyleSheet.create({
     textAlign: 'center',
     color: 'white'
   }
-});
+})
 
-AppRegistry.registerComponent('PopularNews', () => PopularNews);
+AppRegistry.registerComponent('PopularNews', () => PopularNews)

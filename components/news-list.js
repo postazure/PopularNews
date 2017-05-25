@@ -1,34 +1,32 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import {
   StyleSheet,
   AsyncStorage,
   View,
   ScrollView,
   RefreshControl
-} from 'react-native';
+} from 'react-native'
 
-import NewsTile from './news-tile';
-import NewsParser from '../lib/news-parser';
+import NewsTile from './news-tile'
 import ButtonTile from './button-tile'
 
 export default class NewsList extends Component {
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
     this.state = {
       refreshing: false
-    };
+    }
 
-    this.onRefresh = this.onRefresh.bind(this);
+    this.onRefresh = this.onRefresh.bind(this)
   }
 
-  onRefresh() {
-    this.setState({refreshing: true});
-    this.props.onRefresh(() => {
-      this.setState({refreshing: false});
-    });
+  onRefresh () {
+    this.setState({refreshing: true})
+    this.props.onRefresh()
+      .then(() => this.setState({refreshing: false}))
   }
 
-  renderNewsTile(post) {
+  renderNewsTile (post) {
     return (
       <View style={$.item} key={post.data.id}>
         <NewsTile
@@ -40,24 +38,24 @@ export default class NewsList extends Component {
     )
   }
 
-  render() {
-    const newsTiles = this.props.newsPosts.map((post) => this.renderNewsTile(post));
+  render () {
+    const newsTiles = this.props.newsPosts.map((post) => this.renderNewsTile(post))
 
-    let moreStoriesButton = null;
+    let moreStoriesButton = null
     if (this.props.readMoreButton) {
       moreStoriesButton = (
         <View style={$.item}>
           <ButtonTile
             onPress={this.props.fetchNews}
-            text={"More Stories"}
-            iconName={"chevron-down"}
+            text={'More Stories'}
+            iconName={'chevron-down'}
             iconSize={12}
           />
         </View>
-      );
+      )
     }
 
-    let refreshControl = null;
+    let refreshControl = null
     if (this.props.onRefresh) {
       refreshControl = (
         <RefreshControl
@@ -65,7 +63,7 @@ export default class NewsList extends Component {
           tintColor={'#3762D5'}
           title={'refreshing'}
           onRefresh={this.onRefresh}/>
-      );
+      )
     }
 
     return (
@@ -76,7 +74,7 @@ export default class NewsList extends Component {
         {newsTiles}
         {moreStoriesButton}
       </ScrollView>
-    );
+    )
   }
 }
 
@@ -85,4 +83,4 @@ const $ = StyleSheet.create({
   item: {
     margin: 3,
   }
-});
+})
