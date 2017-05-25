@@ -114,7 +114,7 @@ describe('ContentFetcher', () => {
       let existingPosts = [allNewsPosts[0]];
 
       let cb = jest.fn();
-      subject.fetchMoreNews(existingPosts, cb);
+      subject.fetchNews(existingPosts, cb);
 
       expect(cb).toBeCalledWith(allNewsPosts);
     });

@@ -38,10 +38,10 @@ export default class PopularNews extends Component {
 
   componentDidMount () {
     newsPostManager.fetchDonePostListFromStorage((readPosts) => {
-      this.setState({doneNewsPosts: readPosts})
+      this.setState({doneNewsPosts: readPosts},
+        this.fetchNews
+      )
     })
-
-    this.fetchNews()
   }
 
   toggleTheme () {
@@ -53,7 +53,7 @@ export default class PopularNews extends Component {
     this.setState({viewReadStories: indexOfCurrentPage === DONE_PAGE_INDEX})
   }
 
-  addPostToDoneNewsPosts (post, cb) {
+  addPostToDoneNewsPosts = (post, cb) => {
     return new Promise(resolve => {
       newsPostManager.transferPostToDoneList(
         post, this.state.unreadNewsPosts, this.state.doneNewsPosts,
@@ -65,16 +65,19 @@ export default class PopularNews extends Component {
   }
 
   fetchNews = () => {
-    return new Promise((resolve, reject) => {
-      contentFetcher.fetchMoreNews(this.state.unreadNewsPosts, this.state.doneNewsPosts)
-        .then((combineNewsPosts) => {this.setState({unreadNewsPosts: combineNewsPosts})})
+    let unreadNewsPosts = this.state.unreadNewsPosts
+
+    return new Promise(resolve => {
+      contentFetcher.fetchNewArticles(unreadNewsPosts, this.state.doneNewsPosts)
+        .then(newArticles => {
+          this.setState({unreadNewsPosts: unreadNewsPosts.concat(newArticles)})
+        })
         .then(resolve)
     })
-
   }
 
   refreshNews = () => {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       contentFetcher.refreshNews()
       this.fetchNews()
         .then(resolve)
