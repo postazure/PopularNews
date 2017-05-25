@@ -78,7 +78,8 @@ export default class PopularNews extends Component {
   }
 
   clearAllDonePosts () {
-    newsPostManager.clearAllDone(this.setState({ doneNewsPosts: [] }, this.refreshNews))
+    newsPostManager.clearAllDone()
+      .then(this.setState({ articles: [] }, this.refreshNews))
   }
 
   render () {
