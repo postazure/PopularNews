@@ -1,6 +1,5 @@
 import ContentFetcher from '../../lib/content-fetcher';
 import NewsParser from '../../lib/news-parser'
-const newsParser = new NewsParser();
 
 describe('ContentFetcher', () => {
   let cb = jest.fn();
@@ -74,7 +73,7 @@ describe('ContentFetcher', () => {
     it('call the cb with a parsed version of the news json string', () => {
       subject.fetchNews(cb);
 
-      const expectedParsedPosts = newsParser.parse(getNewsResponse);
+      const expectedParsedPosts = NewsParser.parse(getNewsResponse);
       expect(cb).toBeCalledWith(expectedParsedPosts);
     });
   });
@@ -110,7 +109,7 @@ describe('ContentFetcher', () => {
 
   describe('#fetchMoreNews', () => {
     it('should call cb with with a unique list of posts', () => {
-      let allNewsPosts = newsParser.parse(getNewsResponse);
+      let allNewsPosts = NewsParser.parse(getNewsResponse);
       let existingPosts = [allNewsPosts[0]];
 
       let cb = jest.fn();
