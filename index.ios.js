@@ -28,17 +28,18 @@ export default class PopularNews extends Component {
       theme: themeManager.BRIGHT_THEME,
       viewReadStories: false,
       unreadNewsPosts: [],
-      doneNewsPosts: []
+      doneNewsPosts: [],
+      articles: []
     }
 
     this.toggleTheme = this.toggleTheme.bind(this)
     this.toggleViewReadStories = this.toggleViewReadStories.bind(this)
-    this.addPostToDoneNewsPosts = this.addPostToDoneNewsPosts.bind(this)
+    this.markArticleAsDone = this.markArticleAsDone.bind(this)
   }
 
   componentDidMount () {
     newsPostManager.fetchDonePostListFromStorage((readPosts) => {
-      this.setState({doneNewsPosts: readPosts},
+      this.setState({doneNewsPosts: readPosts, articles: readPosts},
         this.fetchNews
       )
     })
@@ -53,24 +54,35 @@ export default class PopularNews extends Component {
     this.setState({viewReadStories: indexOfCurrentPage === DONE_PAGE_INDEX})
   }
 
-  addPostToDoneNewsPosts = (post, cb) => {
-    return new Promise(resolve => {
-      newsPostManager.transferPostToDoneList(
-        post, this.state.unreadNewsPosts, this.state.doneNewsPosts,
-        (newUnreadList, newDoneList) => {
-          this.setState({doneNewsPosts: newDoneList, unreadNewsPosts: newUnreadList})
-        }, resolve)
-    })
-      .then(cb())
+  markArticleAsDone = (articleToMark, cb) => {
+    new Promise(resolve => {
+      let newArticlesState = Object.assign([], this.state.articles)
+      let newPost = newArticlesState.find(p => p.data.id === articleToMark.data.id)
+      newPost.doneAt = new Date().getTime()
+      this.setState({articles: newArticlesState}, resolve)
+    }).then(cb)
+
+    // debugger
+    // return new Promise(resolve => {
+    //   newsPostManager.transferPostToDoneList(
+    //     post, this.state.unreadNewsPosts, this.state.doneNewsPosts,
+    //     (newUnreadList, newDoneList) => {
+    //       this.setState({doneNewsPosts: newDoneList, unreadNewsPosts: newUnreadList})
+    //     }, resolve)
+    // })
+    //   .then(cb())
   }
 
   fetchNews = () => {
-    let unreadNewsPosts = this.state.unreadNewsPosts
+    debugger
+    let unreadNewsArticles = this.getUnreadArticles()
+    let doneArticles = this.getDoneArticles()
+    let articles = this.state.articles
 
     return new Promise(resolve => {
-      contentFetcher.fetchNewArticles(unreadNewsPosts, this.state.doneNewsPosts)
+      contentFetcher.fetchNewArticles(unreadNewsArticles, doneArticles)
         .then(newArticles => {
-          this.setState({unreadNewsPosts: unreadNewsPosts.concat(newArticles)})
+          this.setState({articles: articles.concat(newArticles)})
         })
         .then(resolve)
     })
@@ -86,6 +98,14 @@ export default class PopularNews extends Component {
 
   clearAllDonePosts () {
     newsPostManager.clearAllDone(this.setState({doneNewsPosts: []}, this.refreshNews))
+  }
+
+  getDoneArticles = () => {
+    return this.state.articles.filter(a => !!a.doneAt)
+  }
+
+  getUnreadArticles = () => {
+    return this.state.articles.filter(a => !a.doneAt)
   }
 
   render () {
@@ -113,7 +133,7 @@ export default class PopularNews extends Component {
           <View>
             <Text style={$.readBanner}>You've read all this...</Text>
             <NewsList style={$.list}
-                      newsPosts={this.state.doneNewsPosts}
+                      newsPosts={this.getDoneArticles()}
                       readMoreButton={false}
                       fetchNews={this.fetchNews.bind(this)}
             />
@@ -124,12 +144,12 @@ export default class PopularNews extends Component {
             />
           </View>
           <NewsList
-            newsPosts={this.state.unreadNewsPosts}
+            newsPosts={this.getUnreadArticles()}
             onRefresh={this.refreshNews}
             fetchNews={this.fetchNews.bind(this)}
             style={$.list}
             readMoreButton={true}
-            onItemDone={this.addPostToDoneNewsPosts}/>
+            onItemDone={this.markArticleAsDone}/>
         </Swiper>
       </View>
     )
