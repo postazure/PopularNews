@@ -37,35 +37,35 @@ export default class PopularNews extends Component {
 
   componentDidMount () {
     newsPostManager.fetchDonePostListFromStorage()
-      .then(articles => this.setState({articles}, this.fetchNews))
+      .then(articles => this.setState({ articles }, this.fetchNews))
   }
 
   toggleTheme () {
     let theme = themeManager.toggleTheme()
-    this.setState({theme: theme})
+    this.setState({ theme: theme })
   }
 
-  toggleViewReadStories (indexOfCurrentPage) {
-    this.setState({viewReadStories: indexOfCurrentPage === DONE_PAGE_INDEX})
+  toggleViewReadStories ( indexOfCurrentPage ) {
+    this.setState({ viewReadStories: indexOfCurrentPage === DONE_PAGE_INDEX })
   }
 
-  markArticleAsDone = (articleToMark, cb) => {
+  markArticleAsDone = ( articleToMark, cb ) => {
     newsPostManager.markArticleDone(articleToMark, this.state.articles)
-      .then(articles => this.setState({articles}))
+      .then(articles => this.setState({ articles }))
       .then(cb)
   }
 
   fetchNews = () => {
-    let unreadNewsArticles = newsPostManager.getUnreadArticles(this.state.articles)
-    let doneArticles = newsPostManager.getDoneArticles(this.state.articles)
-    let articles = this.state.articles
+    let _this = this
 
     return new Promise(resolve => {
-      contentFetcher.fetchNewArticles(unreadNewsArticles, doneArticles)
+      contentFetcher.fetchNewArticles(
+        newsPostManager.getUnreadArticles(_this.state.articles),
+        newsPostManager.getDoneArticles(_this.state.articles))
         .then(newArticles => {
-          this.setState({articles: articles.concat(newArticles)})
+          _this.setState({ articles: _this.state.articles.concat(newArticles) },
+            resolve)
         })
-        .then(resolve)
     })
   }
 
@@ -78,7 +78,7 @@ export default class PopularNews extends Component {
   }
 
   clearAllDonePosts () {
-    newsPostManager.clearAllDone(this.setState({doneNewsPosts: []}, this.refreshNews))
+    newsPostManager.clearAllDone(this.setState({ doneNewsPosts: [] }, this.refreshNews))
   }
 
   render () {
@@ -87,15 +87,15 @@ export default class PopularNews extends Component {
 
     let headerBarColor = this.state.viewReadStories ? c.headerBarRead : c.headerBar
     return (
-      <View style={[c.container, $.container]}>
-        <View style={[headerBarColor, $.headerBar]}>
+      <View style={[ c.container, $.container ]}>
+        <View style={[ headerBarColor, $.headerBar ]}>
           <View style={$.headerButton}/>
           <View style={$.headerTitle}>
-            <Text style={[c.headerTitleText, $.headerTitleText]}>Popular News</Text>
+            <Text style={[ c.headerTitleText, $.headerTitleText ]}>Popular News</Text>
           </View>
           <View style={$.headerButton}>
             <Icon
-              style={[c.headerButtonIcon, $.headerButtonIcon]}
+              style={[ c.headerButtonIcon, $.headerButtonIcon ]}
               name={themeIconName}
               onPress={this.toggleTheme}
               size={25}/>
@@ -130,19 +130,19 @@ export default class PopularNews extends Component {
 }
 
 themeManager.setColorsFor('index', themeManager.BRIGHT_THEME, {
-  container: {backgroundColor: '#808080'},
-  headerBar: {backgroundColor: '#3762D5'},
-  headerBarRead: {backgroundColor: '#9ba9d3'},
-  headerTitleText: {color: '#FBFBFB'},
-  headerButtonIcon: {color: '#FBFBFB'}
+  container: { backgroundColor: '#808080' },
+  headerBar: { backgroundColor: '#3762D5' },
+  headerBarRead: { backgroundColor: '#9ba9d3' },
+  headerTitleText: { color: '#FBFBFB' },
+  headerButtonIcon: { color: '#FBFBFB' }
 })
 
 themeManager.setColorsFor('index', themeManager.DARK_THEME, {
-  container: {backgroundColor: '#000000'},
-  headerBar: {backgroundColor: '#000000'},
-  headerBarRead: {backgroundColor: '#000000'},
-  headerTitleText: {color: '#FBFBFB'},
-  headerButtonIcon: {color: '#FBFBFB'}
+  container: { backgroundColor: '#000000' },
+  headerBar: { backgroundColor: '#000000' },
+  headerBarRead: { backgroundColor: '#000000' },
+  headerTitleText: { color: '#FBFBFB' },
+  headerButtonIcon: { color: '#FBFBFB' }
 })
 
 const $ = StyleSheet.create({

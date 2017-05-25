@@ -11,7 +11,7 @@ import NewsTile from './news-tile'
 import ButtonTile from './button-tile'
 
 export default class NewsList extends Component {
-  constructor (props) {
+  constructor ( props ) {
     super(props)
     this.state = {
       refreshing: false
@@ -21,12 +21,12 @@ export default class NewsList extends Component {
   }
 
   onRefresh () {
-    this.setState({refreshing: true})
+    this.setState({ refreshing: true })
     this.props.onRefresh()
-      .then(() => this.setState({refreshing: false}))
+      .then(() => this.setState({ refreshing: false }))
   }
 
-  renderNewsTile (post) {
+  renderNewsTile ( post ) {
     return (
       <View style={$.item} key={post.data.id}>
         <NewsTile
@@ -39,7 +39,7 @@ export default class NewsList extends Component {
   }
 
   render () {
-    const newsTiles = this.props.newsPosts.map((post) => this.renderNewsTile(post))
+    const newsTiles = this.props.newsPosts.map(( post ) => this.renderNewsTile(post))
 
     let moreStoriesButton = null
     if (this.props.readMoreButton) {
