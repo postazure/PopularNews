@@ -8,11 +8,7 @@ import {
   TouchableOpacity
 } from 'react-native'
 
-import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures'
-
-import Icon from 'react-native-vector-icons/FontAwesome'
-
-import moment from 'moment'
+import Timestamp from './timestamp'
 import themeManager from '../lib/theme-manager'
 
 export default class NewsTile extends Component {
@@ -53,11 +49,11 @@ export default class NewsTile extends Component {
         <View style={[ c.tile, $.tile ]}>
           <Text style={[ c.title, $.title ]}>{data.title}</Text>
           <View style={$.infoList}>
+            <Timestamp date={data.created}/>
             <Text style={[ c.source, $.source ]}
                   ellipsizeMode="tail"
                   numberOfLines={1}
             >{data.domain}</Text>
-            <Text style={[ c.source, $.time ]}>{moment.unix(data.created).fromNow()}</Text>
           </View>
         </View>
       </TouchableOpacity>
@@ -72,21 +68,24 @@ themeManager.setColorsFor('newsTile', themeManager.BRIGHT_THEME, {
 })
 
 themeManager.setColorsFor('newsTile', themeManager.DARK_THEME, {
-  title: { color: '#D3D3D3' },
-  source: { color: '#D3D3D3' },
-  tile: { backgroundColor: '#131313' },
+  title: { color: '#32F3FF' },
+  source: { color: 'rgb(41, 85, 93)' },
+  tile: { backgroundColor: '#001E26' },
 })
 
 const $ = StyleSheet.create({
   tile: {
     paddingVertical: 10,
     flex: 1,
-    flexDirection: 'column',
+    flexDirection: 'column'
   },
   title: {
-    fontSize: 17,
-    margin: 10,
-    fontWeight: 'bold'
+    fontFamily: 'LeagueGothic-Regular',
+    fontSize: 34,
+    lineHeight: 34,
+    letterSpacing: 1,
+    fontWeight: '400',
+    margin: 10
   },
   source: {
     flex: 1,
@@ -102,6 +101,5 @@ const $ = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 10,
-    marginHorizontal: 20,
   }
 })

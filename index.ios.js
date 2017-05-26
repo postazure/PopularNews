@@ -37,7 +37,7 @@ export default class PopularNews extends Component {
 
   componentDidMount () {
     newsPostManager.fetchDonePostListFromStorage()
-      .then(articles => this.setState({ articles }, this.fetchNews))
+      .then(articles => this.setState({ articles: articles }, this.fetchNews))
   }
 
   toggleTheme () {
@@ -51,20 +51,19 @@ export default class PopularNews extends Component {
 
   markArticleAsDone = ( articleToMark, cb ) => {
     newsPostManager.markArticleDone(articleToMark, this.state.articles)
-      .then(articles => this.setState({ articles }))
+      .then(articles => this.setState({ articles: articles }))
       .then(cb)
   }
 
   fetchNews = () => {
-    let _this = this
-
     return new Promise(resolve => {
       contentFetcher.fetchNewArticles(
-        newsPostManager.getUnreadArticles(_this.state.articles),
-        newsPostManager.getDoneArticles(_this.state.articles))
+        newsPostManager.getUnreadArticles(this.state.articles),
+        newsPostManager.getDoneArticles(this.state.articles))
         .then(newArticles => {
-          _this.setState({ articles: _this.state.articles.concat(newArticles) },
-            resolve)
+          let articles = Object.assign([], this.state.articles)
+          let combined = articles.concat(newArticles)
+          this.setState({ articles: combined }, resolve)
         })
     })
   }
@@ -72,8 +71,7 @@ export default class PopularNews extends Component {
   refreshNews = () => {
     return new Promise(resolve => {
       contentFetcher.refreshNews()
-      this.fetchNews()
-        .then(resolve)
+      this.fetchNews().then(resolve)
     })
   }
 
@@ -90,9 +88,8 @@ export default class PopularNews extends Component {
     return (
       <View style={[ c.container, $.container ]}>
         <View style={[ headerBarColor, $.headerBar ]}>
-          <View style={$.headerButton}/>
           <View style={$.headerTitle}>
-            <Text style={[ c.headerTitleText, $.headerTitleText ]}>Popular News</Text>
+            <Text style={[ c.headerTitleText, $.headerTitleText ]}>SH*T PEOPLE ARE READING</Text>
           </View>
           <View style={$.headerButton}>
             <Icon
@@ -139,11 +136,11 @@ themeManager.setColorsFor('index', themeManager.BRIGHT_THEME, {
 })
 
 themeManager.setColorsFor('index', themeManager.DARK_THEME, {
-  container: { backgroundColor: '#000000' },
-  headerBar: { backgroundColor: '#000000' },
+  container: { backgroundColor: '#001E26' },
+  headerBar: { backgroundColor: '#001E26' },
   headerBarRead: { backgroundColor: '#000000' },
-  headerTitleText: { color: '#FBFBFB' },
-  headerButtonIcon: { color: '#FBFBFB' }
+  headerTitleText: { color: '#32F3FF' },
+  headerButtonIcon: { color: '#32F3FF' }
 })
 
 const $ = StyleSheet.create({
@@ -160,12 +157,17 @@ const $ = StyleSheet.create({
   headerTitle: {
     flex: 1,
     flexDirection: 'column',
-    justifyContent: 'center',
+    justifyContent: 'flex-end',
   },
   headerTitleText: {
-    fontSize: 25,
+    fontSize: 10,
+    fontFamily: 'helvetica-normal',
+    height: 12,
+    letterSpacing: 2,
+    lineHeight: 12,
     fontWeight: 'bold',
-    textAlign: 'center',
+    textAlign: 'left',
+    paddingLeft: 10
   },
   headerButton: {
     flex: 0.28,

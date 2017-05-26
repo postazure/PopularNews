@@ -60,7 +60,6 @@ export default class NewsList extends Component {
       refreshControl = (
         <RefreshControl
           refreshing={this.state.refreshing}
-          tintColor={'#3762D5'}
           title={'refreshing'}
           onRefresh={this.onRefresh}/>
       )
@@ -81,6 +80,6 @@ export default class NewsList extends Component {
 const $ = StyleSheet.create({
   list: {},
   item: {
-    margin: 3,
+    borderBottomWidth: 2,
   }
 })
