@@ -36,6 +36,9 @@ export default class PopularNews extends Component {
   componentDidMount () {
     newsPostManager.fetchDonePostListFromStorage()
       .then(articles => this.setState({ articles: articles }, this.fetchNews))
+
+    themeManager.getSavedTheme()
+      .then(theme => {this.setState({ theme: theme })})
   }
 
   toggleTheme () {
