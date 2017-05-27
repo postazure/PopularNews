@@ -1,14 +1,10 @@
 import React, { Component } from 'react'
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity
-} from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 
 import Icon from 'react-native-vector-icons/FontAwesome'
 
 import themeManager from '../lib/theme-manager'
+import colors from '../lib/colors'
 
 export default class ButtonTile extends Component {
   render () {
@@ -44,13 +40,13 @@ export default class ButtonTile extends Component {
 }
 
 themeManager.setColorsFor('buttonTile', themeManager.BRIGHT_THEME, {
-  text: { color: '#171414' },
-  background: { backgroundColor: 'white' },
+  text: { color: colors.dogerBlue },
+  background: { backgroundColor: colors.white },
 })
 
 themeManager.setColorsFor('buttonTile', themeManager.DARK_THEME, {
-  text: { color: '#D3D3D3' },
-  background: { backgroundColor: '#131313' },
+  text: { color: colors.cyan },
+  background: { backgroundColor: colors.swamp },
 })
 
 const $ = StyleSheet.create({

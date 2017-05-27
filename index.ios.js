@@ -9,6 +9,8 @@ import NewsPostManager from './lib/news-post-manager'
 import ContentFetcher from './lib/content-fetcher'
 
 import themeManager from './lib/theme-manager'
+import colors from './lib/colors'
+
 import RedditClient from './lib/reddit-client'
 const newsPostManager = new NewsPostManager()
 
@@ -124,19 +126,19 @@ export default class PopularNews extends Component {
 }
 
 themeManager.setColorsFor('index', themeManager.BRIGHT_THEME, {
-  container: { backgroundColor: '#808080' },
-  headerBar: { backgroundColor: 'white' },
-  headerBarRead: { backgroundColor: 'gray' },
-  headerTitleText: { color: '#000' },
-  headerButtonIcon: { color: '#000' }
+  container: { backgroundColor: colors.gray },
+  headerBar: { backgroundColor: colors.white },
+  headerBarRead: { backgroundColor: colors.gray },
+  headerTitleText: { color: colors.black },
+  headerButtonIcon: { color: colors.black }
 })
 
 themeManager.setColorsFor('index', themeManager.DARK_THEME, {
-  container: { backgroundColor: '#001E26' },
-  headerBar: { backgroundColor: '#001E26' },
-  headerBarRead: { backgroundColor: '#000000' },
-  headerTitleText: { color: '#32F3FF' },
-  headerButtonIcon: { color: '#32F3FF' }
+  container: { backgroundColor: colors.black },
+  headerBar: { backgroundColor: colors.swamp },
+  headerBarRead: { backgroundColor: colors.black },
+  headerTitleText: { color: colors.cyan },
+  headerButtonIcon: { color: colors.cyan }
 })
 
 const $ = StyleSheet.create({

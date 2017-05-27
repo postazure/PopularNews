@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from 'react-native'
 import PropTypes from 'prop-types'
 
 import themeManager from '../lib/theme-manager'
+import colors from '../lib/colors'
 
 import TimestampHelper from '../lib/timestamp-helper'
 
@@ -30,15 +31,15 @@ export default class Timestamp extends Component {
 }
 
 themeManager.setColorsFor('timestamp', themeManager.BRIGHT_THEME, {
-  number: { color: 'rgb(255, 0, 255)' },
-  words: { color: '#83c1d0' },
-  ago: { color: '#abacad' },
+  number: { color: colors.fuchsia },
+  words: { color: colors.halfBacked },
+  ago: { color: colors.bombay },
 })
 
 themeManager.setColorsFor('timestamp', themeManager.DARK_THEME, {
-  number: { color: 'rgb(152, 255, 82)' },
-  words: { color: '#32F3FF' },
-  ago: { color: 'rgb(41, 85, 93)' },
+  number: { color: colors.greenYellow },
+  words: { color: colors.cyan },
+  ago: { color: colors.casal },
 })
 
 const $ = StyleSheet.create({

@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Timestamp from './timestamp'
 import themeManager from '../lib/theme-manager'
+import colors from '../lib/colors'
 
 export default class NewsTile extends Component {
   constructor ( props ) {
@@ -60,19 +61,19 @@ export default class NewsTile extends Component {
 }
 
 themeManager.setColorsFor('newsTile', themeManager.BRIGHT_THEME, {
-  title: { color: 'rgb(0, 175, 255)' },
-  source: { color: '#83c1d0' },
-  tile: { backgroundColor: 'white' },
-  infoBorder: { borderRightColor: '#e9e5eb'},
-  info: {color: '#abacad' }
+  title: { color: colors.dogerBlue },
+  source: { color: colors.halfBacked },
+  tile: { backgroundColor: colors.white },
+  infoBorder: { borderRightColor: colors.mischka},
+  info: {color: colors.bombay }
 })
 
 themeManager.setColorsFor('newsTile', themeManager.DARK_THEME, {
-  title: { color: '#32F3FF' },
-  source: { color: '#32F3FF' },
-  tile: { backgroundColor: '#001E26' },
-  infoBorder: { borderRightColor: 'rgb(41, 85, 93)'},
-  info: { color: 'rgb(41, 85, 93)' },
+  title: { color: colors.cyan },
+  source: { color: colors.cyan },
+  tile: { backgroundColor: colors.swamp },
+  infoBorder: { borderRightColor: colors.casal},
+  info: { color: colors.casal },
 })
 
 const $ = StyleSheet.create({
