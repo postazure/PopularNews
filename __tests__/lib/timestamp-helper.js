@@ -39,6 +39,17 @@ describe('Timestamp', () => {
     expect(actual.chrono).toEqual('day')
   })
 
+  it('should display 1 instead of "an"', () => {
+    // "an hour ago" should be "1 hour ago"
+    let aDayAgo = moment(now)
+    aDayAgo.subtract(1, 'hour')
+
+    let actual = subject.getTimestamp(aDayAgo.unix())
+
+    expect(actual.numeric).toEqual(1)
+    expect(actual.chrono).toEqual('hour')
+  })
+
   describe('when an event just happend', () => {
     it('should set it to 1 second', () => {
       let actual = subject.getTimestamp(moment(now).unix())
