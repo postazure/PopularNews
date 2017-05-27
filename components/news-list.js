@@ -26,7 +26,7 @@ export default class NewsList extends Component {
     let c = themeManager.getColorsFor('newsList')
 
     return (
-      <View style={[c.panelBorder, $.item]} key={post.data.id}>
+      <View style={[ c.panelBorder, $.item ]} key={post.data.id}>
         <NewsTile
           article={post}
           markedAsRead={this.props.viewReadStories}
@@ -34,6 +34,12 @@ export default class NewsList extends Component {
         />
       </View>
     )
+  }
+
+  handleFetchMore = () => {
+    debugger
+    this.props.fetchNews()
+      .then(() => this.scrollView.scrollTo({y: 0}))
   }
 
   render () {
@@ -44,9 +50,9 @@ export default class NewsList extends Component {
     let moreStoriesButton = null
     if (this.props.readMoreButton) {
       moreStoriesButton = (
-        <View style={[c.panelBorder, $.item]}>
+        <View style={[ c.panelBorder, $.item ]}>
           <ButtonTile
-            onPress={this.props.fetchNews}
+            onPress={this.handleFetchMore}
             text={'More Stories'}
             iconName={'chevron-down'}
             iconSize={12}
@@ -67,6 +73,7 @@ export default class NewsList extends Component {
 
     return (
       <ScrollView
+        ref={el => this.scrollView = el}
         contentContainerStyle={$.list}
         refreshControl={refreshControl}
         showsVerticalScrollIndicator={false}>
@@ -78,11 +85,11 @@ export default class NewsList extends Component {
 }
 
 themeManager.setColorsFor('newsList', themeManager.BRIGHT_THEME, {
-  panelBorder: { borderBottomColor: colors.mischka}
+  panelBorder: { borderBottomColor: colors.mischka }
 })
 
 themeManager.setColorsFor('newsList', themeManager.DARK_THEME, {
-  panelBorder: { borderBottomColor: colors.black},
+  panelBorder: { borderBottomColor: colors.black },
 })
 
 const $ = StyleSheet.create({
