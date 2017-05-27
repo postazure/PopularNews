@@ -83,11 +83,12 @@ export default class PopularNews extends Component {
     let themeIconName = this.state.theme === themeManager.BRIGHT_THEME ? 'sun-o' : 'moon-o'
 
     let headerBarColor = this.state.viewReadStories ? c.headerBarRead : c.headerBar
+    let headerBarText = this.state.viewReadStories ? 'SH*T YOU READ' : 'SH*T PEOPLE ARE READING'
     return (
       <View style={[ c.container, $.container ]}>
         <View style={[ headerBarColor, $.headerBar ]}>
           <View style={$.headerTitle}>
-            <Text style={[ c.headerTitleText, $.headerTitleText ]}>SH*T PEOPLE ARE READING</Text>
+            <Text style={[ c.headerTitleText, $.headerTitleText ]}>{headerBarText}</Text>
           </View>
           <View style={$.headerButton}>
             <Icon
@@ -100,7 +101,6 @@ export default class PopularNews extends Component {
 
         <Swiper pager={false} index={POPULAR_PAGE_INDEX} onPageChange={this.toggleViewReadStories}>
           <View>
-            <Text style={$.readBanner}>You've read all this...</Text>
             <NewsList style={$.list}
                       newsPosts={newsPostManager.getDoneArticles(this.state.articles)}
                       readMoreButton={false}
@@ -126,7 +126,7 @@ export default class PopularNews extends Component {
 }
 
 themeManager.setColorsFor('index', themeManager.BRIGHT_THEME, {
-  container: { backgroundColor: colors.gray },
+  container: { backgroundColor: colors.bombay },
   headerBar: { backgroundColor: colors.white },
   headerBarRead: { backgroundColor: colors.gray },
   headerTitleText: { color: colors.black },
@@ -177,10 +177,6 @@ const $ = StyleSheet.create({
   },
   list: {
     flex: 1,
-  },
-  readBanner: {
-    textAlign: 'center',
-    color: 'white'
   }
 })
 
