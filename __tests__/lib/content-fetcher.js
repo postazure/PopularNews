@@ -2,6 +2,7 @@ import expect from 'expect'
 
 import ContentFetcher from '../../lib/content-fetcher'
 import NewsParser from '../../lib/news-parser'
+import SourceScreener from '../../lib/source-screener'
 
 describe('ContentFetcher', () => {
   const rawArticles = [
@@ -9,7 +10,7 @@ describe('ContentFetcher', () => {
           'kind': 't3',
           'data': {
             'id': '5ma0g8',
-            'domain': 'example.com',
+            'domain': 'aheadoftheherd.com',
             'url': 'http://www.example.com/story1',
             'title': 'Story Title 1'
           }
@@ -18,9 +19,10 @@ describe('ContentFetcher', () => {
           'kind': 't3',
           'data': {
             'id': '12as3e',
-            'domain': 'example.com',
+            'domain': '24newsflash.com',
             'url': 'http://www.example.com/story2',
-            'title': 'Story Title 2'
+            'title': 'Story Title 2',
+            'created_utc': 200000
           }
         }
       ]
@@ -48,13 +50,23 @@ describe('ContentFetcher', () => {
     })
 
     it('returns parsed articles', async () => {
-      let fetchedArticles;
+      let fetchedArticles = [];
       let fetchArticlesPromise = subject.fetchArticles()
 
       await fetchArticlesPromise.then(articles => fetchedArticles = articles)
 
-      //noinspection JSUnusedAssignment
-      expect(fetchedArticles).toEqual(NewsParser.parse(rawArticles))
+      expect(fetchedArticles[0].data.title).toEqual('Story Title 1')
+      expect(fetchedArticles[1].data.title).toEqual('Story Title 2')
+    })
+
+    it('returns add source validity to articles', async () => {
+      let fetchedArticles = [];
+      let fetchArticlesPromise = subject.fetchArticles()
+
+      await fetchArticlesPromise.then(articles => fetchedArticles = articles)
+
+      expect(fetchedArticles[0].sourceValidity).toEqual(SourceScreener.SUSPECT)
+      expect(fetchedArticles[1].sourceValidity).toEqual(SourceScreener.FAKE)
     })
   })
 })
