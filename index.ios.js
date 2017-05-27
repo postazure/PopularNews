@@ -146,7 +146,6 @@ const $ = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'flex-start',
-    marginTop: 20,
   },
   headerBar: {
     flex: 0.08,
