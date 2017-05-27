@@ -125,10 +125,10 @@ export default class PopularNews extends Component {
 
 themeManager.setColorsFor('index', themeManager.BRIGHT_THEME, {
   container: { backgroundColor: '#808080' },
-  headerBar: { backgroundColor: '#3762D5' },
-  headerBarRead: { backgroundColor: '#9ba9d3' },
-  headerTitleText: { color: '#FBFBFB' },
-  headerButtonIcon: { color: '#FBFBFB' }
+  headerBar: { backgroundColor: 'white' },
+  headerBarRead: { backgroundColor: 'gray' },
+  headerTitleText: { color: '#000' },
+  headerButtonIcon: { color: '#000' }
 })
 
 themeManager.setColorsFor('index', themeManager.DARK_THEME, {

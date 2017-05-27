@@ -18,7 +18,7 @@ export default class Timestamp extends Component {
     let timestamp = timestampHelper.getTimestamp(this.props.date)
 
     return (
-      <View style={[ $.timestamp ]}>
+      <View style={$.timestamp}>
         <Text style={[ c.number, $.numeric ]}>{timestamp.numeric}</Text>
         <View style={[ $.words ]}>
           <Text style={[ c.words, $.timeInfo ]}>{timestamp.chrono}</Text>
@@ -30,9 +30,9 @@ export default class Timestamp extends Component {
 }
 
 themeManager.setColorsFor('timestamp', themeManager.BRIGHT_THEME, {
-  number: { color: '#333333' },
-  words: { color: 'rgb(41, 85, 93)' },
-  ago: { color: 'rgb(41, 85, 93)' },
+  number: { color: 'rgb(255, 0, 255)' },
+  words: { color: '#83c1d0' },
+  ago: { color: '#abacad' },
 })
 
 themeManager.setColorsFor('timestamp', themeManager.DARK_THEME, {

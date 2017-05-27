@@ -1,14 +1,9 @@
 import React, { Component } from 'react'
-import {
-  StyleSheet,
-  AsyncStorage,
-  View,
-  ScrollView,
-  RefreshControl
-} from 'react-native'
+import { RefreshControl, ScrollView, StyleSheet, View } from 'react-native'
 
 import NewsTile from './news-tile'
 import ButtonTile from './button-tile'
+import themeManager from '../lib/theme-manager'
 
 export default class NewsList extends Component {
   constructor ( props ) {
@@ -27,8 +22,10 @@ export default class NewsList extends Component {
   }
 
   renderNewsTile ( post ) {
+    let c = themeManager.getColorsFor('newsList')
+
     return (
-      <View style={$.item} key={post.data.id}>
+      <View style={[c.panelBorder, $.item]} key={post.data.id}>
         <NewsTile
           article={post}
           markedAsRead={this.props.viewReadStories}
@@ -39,12 +36,14 @@ export default class NewsList extends Component {
   }
 
   render () {
+    let c = themeManager.getColorsFor('newsList')
+
     const newsTiles = this.props.newsPosts.map(( post ) => this.renderNewsTile(post))
 
     let moreStoriesButton = null
     if (this.props.readMoreButton) {
       moreStoriesButton = (
-        <View style={$.item}>
+        <View style={[c.panelBorder, $.item]}>
           <ButtonTile
             onPress={this.props.fetchNews}
             text={'More Stories'}
@@ -76,6 +75,14 @@ export default class NewsList extends Component {
     )
   }
 }
+
+themeManager.setColorsFor('newsList', themeManager.BRIGHT_THEME, {
+  panelBorder: { borderBottomColor: '#e9e5eb'}
+})
+
+themeManager.setColorsFor('newsList', themeManager.DARK_THEME, {
+  panelBorder: { borderBottomColor: '#000'},
+})
 
 const $ = StyleSheet.create({
   list: {},

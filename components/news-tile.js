@@ -41,11 +41,17 @@ export default class NewsTile extends Component {
         <View style={[ c.tile, $.tile ]}>
           <Text style={[ c.title, $.title ]}>{data.title}</Text>
           <View style={$.infoList}>
-            <Timestamp date={data.created}/>
-            <Text style={[ c.source, $.source ]}
-                  ellipsizeMode="tail"
-                  numberOfLines={1}
-            >{data.domain}</Text>
+            <View style={[$.timestamp, c.infoBorder]}>
+              <Timestamp date={data.created}/>
+            </View>
+            <View style={$.source}>
+              <Text style={[ c.info, { fontSize: 12 } ]}>SOURCE</Text>
+              <Text style={[ c.source ]}
+                    ellipsizeMode="tail"
+                    numberOfLines={1}>
+                {data.domain}
+              </Text>
+            </View>
           </View>
         </View>
       </TouchableOpacity>
@@ -54,15 +60,19 @@ export default class NewsTile extends Component {
 }
 
 themeManager.setColorsFor('newsTile', themeManager.BRIGHT_THEME, {
-  title: { color: '#171414' },
-  source: { color: '#333333' },
+  title: { color: 'rgb(0, 175, 255)' },
+  source: { color: '#83c1d0' },
   tile: { backgroundColor: 'white' },
+  infoBorder: { borderRightColor: '#e9e5eb'},
+  info: {color: '#abacad' }
 })
 
 themeManager.setColorsFor('newsTile', themeManager.DARK_THEME, {
   title: { color: '#32F3FF' },
-  source: { color: 'rgb(41, 85, 93)' },
+  source: { color: '#32F3FF' },
   tile: { backgroundColor: '#001E26' },
+  infoBorder: { borderRightColor: 'rgb(41, 85, 93)'},
+  info: { color: 'rgb(41, 85, 93)' },
 })
 
 const $ = StyleSheet.create({
@@ -81,13 +91,10 @@ const $ = StyleSheet.create({
   },
   source: {
     flex: 1,
-    textAlign: 'center',
-    fontSize: 12,
+    marginLeft: 20
   },
-  time: {
-    flex: 0.5,
-    textAlign: 'left',
-    fontSize: 12,
+  timestamp: {
+    borderRightWidth: 2
   },
   infoList: {
     flexDirection: 'row',
