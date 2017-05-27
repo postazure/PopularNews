@@ -35,7 +35,7 @@ export default class PopularNews extends Component {
 
   componentDidMount () {
     newsPostManager.fetchDonePostListFromStorage()
-      .then(articles => this.setState({ articles: articles }, this.fetchNews))
+      .then(articles => this.setState({ articles: articles }, this.refreshNews))
 
     themeManager.getSavedTheme()
       .then(theme => {this.setState({ theme: theme })})
@@ -118,7 +118,7 @@ export default class PopularNews extends Component {
           <NewsList
             newsPosts={newsPostManager.getUnreadArticles(this.state.articles)}
             onRefresh={this.refreshNews}
-            fetchNews={this.fetchNews.bind(this)}
+            fetchNews={this.fetchNews}
             style={$.list}
             readMoreButton={true}
             onItemDone={this.markArticleAsDone}/>
