@@ -43,7 +43,7 @@ export default class NewsTile extends Component {
       case SourceScreener.FAKE:
         return <Icon name={'exclamation-triangle'} style={{color: colors.red}}/>
       case SourceScreener.SUSPECT:
-        return <Icon name={'exclamation-triangle'} style={{color: colors.yellow}}/>
+        return <Icon name={'exclamation-triangle'} style={{color: colors.orange}}/>
     }
   }
 
