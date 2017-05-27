@@ -3,6 +3,8 @@ import { Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Timestamp from './timestamp'
 import themeManager from '../lib/theme-manager'
 import colors from '../lib/colors'
+import Icon from 'react-native-vector-icons/FontAwesome'
+import SourceScreener from '../lib/source-screener'
 
 export default class NewsTile extends Component {
   constructor ( props ) {
@@ -36,6 +38,15 @@ export default class NewsTile extends Component {
     })
   }
 
+  renderSourceWarning = () => {
+    switch (this.props.article.sourceValidity) {
+      case SourceScreener.FAKE:
+        return <Icon name={'exclamation-triangle'} style={{color: colors.red}}/>
+      case SourceScreener.SUSPECT:
+        return <Icon name={'exclamation-triangle'} style={{color: colors.yellow}}/>
+    }
+  }
+
   render () {
     let c = themeManager.getColorsFor('newsTile')
     let data = this.props.article.data
@@ -47,11 +58,13 @@ export default class NewsTile extends Component {
         <View style={[ c.tile, $.tile ]}>
           <Text style={[ c.title, $.title ]}>{data.title}</Text>
           <View style={$.infoList}>
-            <View style={[$.timestamp, c.infoBorder]}>
+            <View style={[ $.timestamp, c.infoBorder ]}>
               <Timestamp date={data.created}/>
             </View>
             <View style={$.source}>
-              <Text style={[ c.info, { fontSize: 12 } ]}>SOURCE</Text>
+              <Text style={[ c.info, { fontSize: 12 } ]}>
+                SOURCE {this.renderSourceWarning()}
+              </Text>
               <Text style={[ c.source, $.sourceText ]}
                     ellipsizeMode="tail"
                     numberOfLines={1}>
@@ -69,15 +82,15 @@ themeManager.setColorsFor('newsTile', themeManager.BRIGHT_THEME, {
   title: { color: colors.dogerBlue },
   source: { color: colors.halfBacked },
   tile: { backgroundColor: colors.white },
-  infoBorder: { borderRightColor: colors.mischka},
-  info: {color: colors.bombay }
+  infoBorder: { borderRightColor: colors.mischka },
+  info: { color: colors.bombay }
 })
 
 themeManager.setColorsFor('newsTile', themeManager.DARK_THEME, {
   title: { color: colors.cyan },
   source: { color: colors.cyan },
   tile: { backgroundColor: colors.swamp },
-  infoBorder: { borderRightColor: colors.casal},
+  infoBorder: { borderRightColor: colors.casal },
   info: { color: colors.casal },
 })
 
