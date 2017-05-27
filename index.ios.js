@@ -98,7 +98,7 @@ export default class PopularNews extends Component {
               style={[ c.headerButtonIcon, $.headerButtonIcon ]}
               name={themeIconName}
               onPress={this.toggleTheme}
-              size={25}/>
+              size={35}/>
           </View>
         </View>
 
