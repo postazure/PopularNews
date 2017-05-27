@@ -47,7 +47,7 @@ export default class NewsTile extends Component {
             </View>
             <View style={$.source}>
               <Text style={[ c.info, { fontSize: 12 } ]}>SOURCE</Text>
-              <Text style={[ c.source ]}
+              <Text style={[ c.source, $.sourceText ]}
                     ellipsizeMode="tail"
                     numberOfLines={1}>
                 {data.domain}
@@ -93,6 +93,11 @@ const $ = StyleSheet.create({
   source: {
     flex: 1,
     marginLeft: 20
+  },
+  sourceText: {
+    fontSize: 14,
+    fontWeight: '600',
+    letterSpacing: 1,
   },
   timestamp: {
     borderRightWidth: 2
