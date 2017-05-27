@@ -24,6 +24,11 @@ export default class NewsTile extends Component {
   }
 
   dismissArticle ( cb ) {
+    if (!this.props.onRead) {
+      cb()
+      return
+    }
+
     this.props.onRead(this.props.article, () => {
       if (typeof(cb) === 'function') {
         cb()
