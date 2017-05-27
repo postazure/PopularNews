@@ -1,33 +1,27 @@
 import React, { Component } from 'react'
-import {
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
+import PropTypes from 'prop-types'
 
-import moment from 'moment'
 import themeManager from '../lib/theme-manager'
 
+import TimestampHelper from '../lib/timestamp-helper'
+
 export default class Timestamp extends Component {
+  static propTypes = {
+    date: PropTypes.number.isRequired
+  }
+
   render () {
     let c = themeManager.getColorsFor('timestamp')
 
-    let dateString = moment.unix(this.props.date).fromNow()
-
-    let dateInfo = dateString.split(' ')
-    let numericInfo = 1
-    let timeInfo = 'second'
-
-    if (dateInfo.length === 3) {
-      numericInfo = dateInfo[ 0 ]
-      timeInfo = dateInfo[ 1 ]
-    }
+    const timestampHelper = new TimestampHelper()
+    let timestamp = timestampHelper.getTimestamp(this.props.date)
 
     return (
       <View style={[ $.timestamp ]}>
-        <Text style={[ c.number, $.numeric ]}>{numericInfo}</Text>
+        <Text style={[ c.number, $.numeric ]}>{timestamp.numeric}</Text>
         <View style={[ $.words ]}>
-          <Text style={[ c.words, $.timeInfo ]}>{timeInfo}</Text>
+          <Text style={[ c.words, $.timeInfo ]}>{timestamp.chrono}</Text>
           <Text style={[ c.ago, $.ago ]}>AGO</Text>
         </View>
       </View>
@@ -54,10 +48,7 @@ const $ = StyleSheet.create({
     justifyContent: 'center',
   },
   numeric: {
-    flex: 0.3,
-
-    alignSelf: 'center',
-    marginRight: 8,
+    marginRight: 5,
 
     fontFamily: 'LeagueGothic-Regular',
     fontSize: 34,

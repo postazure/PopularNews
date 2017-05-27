@@ -1,25 +1,21 @@
 import React, { Component } from 'react'
-import {
-  AppRegistry,
-  StyleSheet,
-  Button,
-  Text,
-  View
-} from 'react-native'
+import { AppRegistry, Button, StyleSheet, Text, View } from 'react-native'
 
 import Swiper from 'react-native-page-swiper'
 import NewsList from './components/news-list'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
 import NewsPostManager from './lib/news-post-manager'
-const newsPostManager = new NewsPostManager()
 import ContentFetcher from './lib/content-fetcher'
-const contentFetcher = new ContentFetcher()
 
 import themeManager from './lib/theme-manager'
+import RedditClient from './lib/reddit-client'
+const newsPostManager = new NewsPostManager()
 
 const POPULAR_PAGE_INDEX = 1
 const DONE_PAGE_INDEX = 0
+
+const contentFetcher = new ContentFetcher(new RedditClient())
 
 export default class PopularNews extends Component {
   constructor () {
@@ -70,7 +66,7 @@ export default class PopularNews extends Component {
 
   refreshNews = () => {
     return new Promise(resolve => {
-      contentFetcher.refreshNews()
+      contentFetcher.resetContentTrackers()
       this.fetchNews().then(resolve)
     })
   }

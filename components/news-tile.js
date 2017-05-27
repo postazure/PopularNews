@@ -1,13 +1,5 @@
 import React, { Component } from 'react'
-import {
-  StyleSheet,
-  Text,
-  View,
-  Linking,
-  TouchableWithoutFeedback,
-  TouchableOpacity
-} from 'react-native'
-
+import { Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Timestamp from './timestamp'
 import themeManager from '../lib/theme-manager'
 
