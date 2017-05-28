@@ -22,6 +22,7 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		1E087F16BDA64E1399587CCF /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B810506FA238449E9ACCF90F /* MaterialIcons.ttf */; };
+		2CC25D601EDB2BE300E226F6 /* customizedLaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2CC25D5F1EDB2BE300E226F6 /* customizedLaunchScreen.storyboard */; };
 		2F2EBA7A32D6487892D448D7 /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4DA02359CFCB4F42BADBC47A /* Foundation.ttf */; };
 		304A1F81492D463D9C00EC2D /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E6DB345B4C09408F8BF273E0 /* SimpleLineIcons.ttf */; };
 		4D0A4ED32ECE4DCCBBB907DD /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 91B8A551A7514C15BFA1877C /* EvilIcons.ttf */; };
@@ -243,6 +244,7 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = PopularNews/main.m; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
 		1732E3C7C7DB4A36BD52CED8 /* LeagueGothic-Regular.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "LeagueGothic-Regular.otf"; path = "../assets/fonts/LeagueGothic-Regular.otf"; sourceTree = "<group>"; };
+		2CC25D5F1EDB2BE300E226F6 /* customizedLaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = customizedLaunchScreen.storyboard; sourceTree = "<group>"; };
 		4DA02359CFCB4F42BADBC47A /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		5CA6A84901734032A460B836 /* libRNVectorIcons.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNVectorIcons.a; sourceTree = "<group>"; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
@@ -464,6 +466,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				2CC25D5F1EDB2BE300E226F6 /* customizedLaunchScreen.storyboard */,
 				B4E186621E21726800204468 /* FontAwesome.ttf */,
 				13B07FAE1A68108700A75B9A /* PopularNews */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
@@ -511,7 +514,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 830;
-				ORGANIZATIONNAME = Facebook;
+				ORGANIZATIONNAME = postazure;
 				TargetAttributes = {
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = ZBQMW5JHMN;
@@ -788,6 +791,7 @@
 				7ADB756C79CE4FBB8F4E3B2B /* MaterialCommunityIcons.ttf in Resources */,
 				1E087F16BDA64E1399587CCF /* MaterialIcons.ttf in Resources */,
 				0E5B3A1EE053429986F68CDA /* Octicons.ttf in Resources */,
+				2CC25D601EDB2BE300E226F6 /* customizedLaunchScreen.storyboard in Resources */,
 				304A1F81492D463D9C00EC2D /* SimpleLineIcons.ttf in Resources */,
 				A943931A5AD2459EAA6227BB /* Zocial.ttf in Resources */,
 			);
